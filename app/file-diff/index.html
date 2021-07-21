@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Diff</title>
+<link rel="stylesheet" href="../../libs/js/codemirror/v5.32.0/codemirror.css">
+<link rel="stylesheet" href="../../libs/js/mergely/mergely.css">
+
+<style>
+#mergely-splash {display: none;}
+</style>
+</head>
+<body>
+
+<div class="mergely-full-screen-8">
+<div class="mergely-resizer">
+<div id="mergely"></div>
+</div>
+</div>
+
+
+
+<script>var n = 1;</script>
+<script src="../../libs/js/jquery/v1.10.2/jquery.min.js"></script>
+<script src="../../libs/js/codemirror/v5.32.0/codemirror.min.js"></script>
+<script src="../../libs/js/mergely/mergely.js"></script>
+
+
+<script>
+$(document).ready(function () {
+ $('#mergely').mergely();
+});
+</script>
+
+</body>
+</html>

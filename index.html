@@ -4,9 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>666</title>
 </head>
 <body>
-    <h1>hello web tools</h1>
+
+<script>
+const $DATA = {
+    dataList: `
+        读取剪切板图片 read-clipboard-image
+        文件比对 file-diff
+    `.split(/\n/).filter(item => item.trim()).map(item => item.trim()),
+};
+</script>
+<style>
+
+</style>
+<h1>hello web tools</h1>
+<ul id="list"></ul>
+<script>
+document.querySelector('#list').innerHTML = 
+$DATA.dataList
+.map(item => item.split(/\s+/))
+.map(arr => `<li><a href="/app/${arr[1]}">${arr[0]}</a></li>`)
+.join('');
+</script>
 </body>
 </html>

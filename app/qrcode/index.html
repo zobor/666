@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div id="app">
+    <h1 class="title">二维码</h1>
+    <div style="margin: 10px 0;"></div>
+    <input
+        type="text"
+        placeholder="请输入URL地址"
+    />
+    <div style="margin: 10px 0;"></div>
+    <div class="qrBox" id="qrId"></div>
+</div>
+
+<script src="../../libs/js/qrcode/qrcode.min.js"></script>
+<script>
+
+const config = {
+    text: 'hello',
+    width: 230,
+    height: 230,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: 1,
+};
+const qrcode = new QRCode(document.querySelector('#qrId'), config);
+document.querySelector('input').addEventListener('keyup' , e => {
+    console.log(e.target.value)
+    qrcode.makeCode(e.target.value.trim());
+});
+</script>
+</body>
+</html>

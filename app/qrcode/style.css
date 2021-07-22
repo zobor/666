@@ -1,0 +1,14 @@
+* {margin: 0;padding:0}
+#app {
+    max-width: 500px;
+    margin: 0 auto;
+    color: #fff;
+    padding: 10px 4px;
+}
+input {
+    width: 90%;
+    padding: 6px 10px;
+    outline: none;
+    border-radius: 5px;
+    border: solid 1px #efefef;
+}

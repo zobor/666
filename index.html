@@ -12,17 +12,21 @@
 <script>
 const $DATA = {
     dataList: `
-        读取剪切板图片 read-clipboard-image
-        文件比对 file-diff
-        代码编辑 code-editor
-        二维码 qrcode
+        读取剪切板图片 read-clipboard-image/
+        文件比对 file-diff/
+        代码编辑 code-editor/
+        二维码 qrcode/
+        语音识别 voice-reading/
+        文本转语音 word-reading/
+        文件转base64 file-2-base64/
+        mp4转mp3 mp4-2-mp3/
     `.split(/\n/).filter(item => item.trim()).map(item => item.trim()),
 };
 </script>
 <style>
 button {margin-right: 20px;}
 </style>
-<h1>hello web tools</h1>
+<h1>浏览器应用</h1>
 <ul id="list"></ul>
 <script>
 document.querySelector('#list').innerHTML = 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+
+<input type="file" />
+<video id="test"></video>
+<audio id="test2" />
+<!-- <script>
+    window.module = {};
+</script> -->
+<!-- <script type="module" src="./node_modules/_ffmpeg.js@4.2.9003@ffmpeg.js/ffmpeg-mp4.js"></script> -->
+<!-- <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.8.3/dist/ffmpeg.min.js"></script> -->
+<!-- <script>
+    // See https://github.com/facebook/react/issues/20829#issuecomment-802088260
+    if (!crossOriginIsolated) SharedArrayBuffer = ArrayBuffer;
+  </script> -->
+<script crossorigin="" src="./ffmpeg.min.js"></script>
+<script>
+    let ffmpeg;
+    const $video = document.querySelector('#test');
+    const $audio = document.querySelector('#test2');
+    const convert = async(file) => {
+        await ffmpeg.load();
+        const { name } = file;
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        ffmpeg.FS('writeFile', name, await fetchFile(file));
+        await ffmpeg.run('-i', name, 'output.mp4');
+        // const data = ffmpeg.FS('readFile', 'output.mp4');
+        const data = ffmpeg.FS('readFile', 'output.mp4');
+        const url = window.URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+        $video.src= url;
+        $video.load();
+        $video.play();
+    };
+    const mp3 = async(file) => {
+        // -vn -ar 44100 -ac 2 -ab 192 -f mp3
+        await ffmpeg.load();
+        const { name } = file;
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        console.log(file);
+        ffmpeg.FS('writeFile', name, await fetchFile(file));
+        await ffmpeg.run('-i', name, '-vn', '-ar', '44100', '-ac', '2', '-ab', '192', '-f', 'mp3', 'output.mp3');
+        // const data = ffmpeg.FS('readFile', 'output.mp4');
+        const data = ffmpeg.FS('readFile', 'output.mp3');
+        const url = window.URL.createObjectURL(new Blob([data.buffer], { type: 'auiod/mp3' }));
+        $audio.src= url;
+        $audio.load();
+        $audio.play();
+    };
+    const $file = document.querySelector('input[type=file]');
+    console.log($file);
+    window.onload = () => {
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        ffmpeg = createFFmpeg({
+            // corePath: "./ffmpeg-core.js",
+            log: true,
+        });
+    };
+    $file.onchange = (e) => {
+        const file = e.target.files[0];
+        console.log(file);
+        // convert(file);
+        mp3(file);
+    }
+</script>
+
+</body>
+</html>

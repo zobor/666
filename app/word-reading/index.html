@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>点击我读取内容</h1>
+    <textarea name="txt" id="txt" style="width: 100%;height: 500px"></textarea>
+    <!-- <div id="audio"></div>
+    <script src="./speakClient.js"></script>
+    <script>
+        speak('明天星期五呀，后天不上班呀', {
+            voice: 'fr'
+        })
+    </script> -->
+
+    <script>
+        // const synth = window.speechSynthesis;
+
+// const speak = (msg) => {
+//   let u = new SpeechSynthesisUtterance();
+//   u.lang = 'zh-cn';
+//   u.text = msg;
+//   synth.speak(u);
+// };
+
+// speak("你要讀出的中文內容1");
+// speak("你要讀出的中文內容2");
+const say = () => {
+    const text = document.querySelector('textarea').value.trim();
+    if (!text) return;
+    const synth = window.speechSynthesis;
+    const speak = (msg) => {
+    let u = new SpeechSynthesisUtterance();
+    u.text = msg;
+    u.lang = 'zh-cn';
+
+    synth.speak(u);
+    };
+    speak(text);
+}
+
+document.querySelector('h1').onclick = say;
+    </script>
+</body>
+</html>

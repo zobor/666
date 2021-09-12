@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64转图片</title>
+</head>
+<body>
+
+<input type="file" id="f" multiple />
+<div id="app"></div>
+
+<script>
+const $f = document.querySelector('input[type=file]');
+const $app = document.querySelector('#app');
+const readFile = (file) => {
+    const reader = new FileReader();
+    return new Promise((resolve) => {
+        reader.onload = (()=>{
+            resolve(reader.result);
+        });
+        reader.readAsBinaryString(file);
+    });
+};
+$f.onchange = async(e) => {
+    const { files } = e.target;
+    const fileList = Array.from(files);
+    const html = [];
+    for (let i = 0; i < fileList.length ; i++) {
+        const file = fileList[i];
+        const txt = await readFile(file);
+        console.log(txt);
+        const img = `<img src="${txt}" />`;
+        html.push(img);
+    }
+    $app.innerHTML = html.join('');
+}
+</script>
+
+</body>
+</html>

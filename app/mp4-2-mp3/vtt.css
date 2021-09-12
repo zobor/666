@@ -1,0 +1,25 @@
+::cue {
+    /* background:#ad9; */
+    background: none;
+    /* color: yellow; */
+    /* color: white; */
+    /* color:rgb(47,98,232); */
+    color: rgb(252, 220, 0);
+    text-shadow: rgb(0 0 0) 1px 0px 1px, rgb(0 0 0) 0px 1px 1px, rgb(0 0 0) -1px 0px 1px, rgb(0 0 0) 0px -1px 1px, rgb(0 0 0) 1px 1px 1px, rgb(0 0 0) -1px -1px 1px, rgb(0 0 0) 1px -1px 1px, rgb(0 0 0) -1px 1px 1px, rgb(0 0 0 / 49%) 3px 3px 0px, rgb(0 0 0 / 49%) 2px 2px 0px, rgb(0 0 0 / 49%) 1px 1px 0px;
+    letter-spacing: 1px;
+    /* text-shadow: 2px 2px 4px #000; */
+    /* text-shadow: 1px 1px 2px black, 0 0 1em blue, 0 0 0.2em blue; */
+    font-size: 22px;
+    font-family: "mp-quote",-apple-system-font,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei",Arial,sans-serif;
+
+    /* font-family: "微软雅黑"; */
+    /* text-decoration: underline; */
+}
+
+ :root {
+    --main-bg-color: brown;
+    --plyr-captions-background: rgba(0, 0, 0, 0.49);
+    --plyr-captions-text-color: rgb(252, 220, 0);
+    --plyr-font-size-base: 32px;
+    --plyr-font-size-xlarge: 40px;
+ }

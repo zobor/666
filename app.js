@@ -1,6 +1,7 @@
 var serve = require('koa-static-server')
 const Koa = require('koa');
 const app = new Koa();
+const path = require('path');
 
  // folder support
 // GET /web/
@@ -16,6 +17,6 @@ app.use(async(ctx, next) => {
     await next();
 });
 
-app.use(serve({ rootDir: '/Users/zobor/code/666', rootPath: '/', index: 'index.html' }));
+app.use(serve({ rootDir: path.resolve('.'), rootPath: '/', index: 'index.html' }));
 
 app.listen(3000);

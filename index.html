@@ -21,6 +21,7 @@ const $DATA = {
         文件转base64 file-2-base64/
         mp4转mp3 mp4-2-mp3/
         base64转图片 base64-to-image/
+        时序图 sequence/
     `.split(/\n/).filter(item => item.trim()).map(item => item.trim()),
 };
 </script>
@@ -30,11 +31,13 @@ button {margin-right: 20px;}
 <h1>浏览器应用</h1>
 <ul id="list"></ul>
 <script>
+const basePath = location.hostname === 'localhost' ? '/' : '/666/'
 document.querySelector('#list').innerHTML = 
 $DATA.dataList
 .map(item => item.split(/\s+/))
-.map(arr => `<button type="button" class="btn btn-default"><a href="/app/${arr[1]}">${arr[0]}</a></button>`)
+.map(arr => `<button type="button" class="btn btn-default"><a href="${basePath}app/${arr[1]}">${arr[0]}</a></button>`)
 .join('');
+console.log(basePath)
 </script>
 </body>
 </html>

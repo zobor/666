@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>chart</title>
+<style>
+* {margin: 0; padding: 0;}
+#app {
+  position: absolute;
+  background: #efefef;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+<script>
+const rand = (min, max) => {
+return parseInt(Math.random() * (max - min + 1) + min, 10);
+};
+
+const float2Fix = (num, bit = 2) => {
+const rate = parseInt(num * 10 ** (bit + 2).toString(), 10) / 10 ** bit;
+return `${rate}%`;
+};
+
+const loadScript = (src, timeout = 6000) =>
+new Promise((resolve) => {
+  const script = document.createElement("script");
+  if (script.readyState) {
+    script.onreadystatechange = function () {
+      if (script.readyState == "loaded" || this.readyState == "complete") {
+        resolve();
+      }
+    };
+  } else {
+    script.onload = () => {
+      resolve();
+    };
+  }
+  script.src = src;
+  document.head.appendChild(script);
+
+  setTimeout(() => {
+    resolve({});
+    script.remove();
+  }, timeout);
+});
+
+const jsonp = (url, cb = 'jQuery1123006039486562982099_1613808847558') => {
+ return new Promise(resolve => {
+   window[cb] = (data) => {
+     resolve(data);
+     window[cb] = null;
+     delete window[cb];
+   };
+   loadScript(url);
+ });
+};
+
+const loadCodeData = async(code) => {
+  const cb = `jQuery${rand(100000,90000)}_${Date.now()}`;
+  const c = code.replace(/\D+/, '');
+  const type = code.indexOf('sz') > -1 ? '0' : '1';
+  const fields1 = 'f1,f2,f3,f4,f5,f6';
+  const fields2 = 'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61';
+  const url = `http://push2his.eastmoney.com/api/qt/stock/kline/get?fqt=1&beg=0&end=20500000&cb=${cb}&lmt=0&klt=101&fields1=${encodeURIComponent(fields2)}&fields2=${encodeURIComponent(fields2)}=&ut=7eea3edcaed734bea9cbfc24409ed989&secid=${type}.${c}&_=${Date.now()}`;
+  console.log(url);
+
+  // http://push2his.eastmoney.com/api/qt/stock/kline/get?cb=jQuery1124001096299200056694_1616208818641&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61&ut=7eea3edcaed734bea9cbfc24409ed989&klt=101&fqt=1&secid=0.000333&beg=0&end=20500000&_=1616208818672
+
+  const rs = await jsonp(url, cb);
+  const data = rs.data.klines.reverse().map((item, idx) => {
+    const arr = item.split(',');
+    if (idx === 0) {
+      console.log(arr);
+    }
+
+    return {
+      day: arr[0],
+      close: arr[1],
+      max: arr[3],
+      min: arr[4],
+    }
+  });
+
+  return data;
+}
+const getUrlParam = (name) => {
+  const name2 = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+  const regex = new RegExp(`[\\?&]${name2}=([^&#]*)`);
+  const results = regex.exec(window.location.search);
+
+  return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+</script>
+</head>
+<body>
+
+<div id="app"></div>
+<script src="../lib/echarts.min.js"></script>
+
+<script type="text/javascript">
+window.onorientationchange = () => {
+  setTimeout(() => {
+    window.location.reload();
+  }, 500);
+};
+window.onload = async() => {
+const code = getUrlParam('c');
+const key = getUrlParam('key') || 'close';
+const buyTime = getUrlParam('b');
+const buyValue = getUrlParam('bv');
+const sellTime = getUrlParam('s');
+const sellValue = getUrlParam('sv');
+const pageSize = getUrlParam('pagesize');
+const showMax = getUrlParam('showmax');
+const showMin = getUrlParam('showmin');
+if (!code) return;
+
+const data = await loadCodeData(code);
+const current = data[0];
+
+const myChart = echarts.init(document.getElementById('app'));
+const listData = data.slice(0, Number(pageSize) || 120).reverse();
+console.log(listData[0]);
+let xData = listData.map(item => item.day);
+let yData = listData.map(item => item.close);
+
+let buyPointData = {};
+let sellPointData = {};
+let startIndex;
+let endIndex;
+if ((buyTime && buyValue) || (sellTime && sellValue)) {
+  buyPointData = {
+    name: '买入',
+    value: '买入',
+    xAxis: buyTime,
+    yAxis: buyValue,
+  };
+  if ((sellTime && sellValue)) {
+    sellPointData = {
+      name: '卖出',
+      value: '卖出',
+      xAxis: sellTime,
+      yAxis: sellValue,
+    };
+  }
+
+  // debugger
+
+  startIndex = xData.findIndex((item) => item === buyTime);
+  endIndex = sellTime ? xData.findIndex((item) => item === sellTime) : (xData.length - 1);
+  const maxLen = 7;
+
+  if (startIndex !== -1) {
+    if ((startIndex - maxLen) >= 0) {
+      startIndex = startIndex - maxLen;
+    }
+  }
+
+  if (endIndex !== -1) {
+    if ((endIndex + maxLen) >= xData.length) {
+      endIndex = xData.length;
+    } else {
+      endIndex = endIndex + maxLen;
+    }
+  } else {
+    endIndex = xData.length;
+  }
+
+  if (startIndex !== -1 && endIndex !== -1) {
+    xData = xData.slice(startIndex, endIndex);
+    yData = yData.slice(startIndex, endIndex);
+  }
+
+}
+
+const option = {
+  title: {
+    text: code,
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    formatter: function(datas) {
+      const [data] = datas;
+      const time = data.name;
+      const value = Number(data.data);
+      const todayClose = Number(current[key]);
+      const t1 = +new Date(time.replace(/-/g, '/'));
+      const t2 = +new Date(current.day.replace(/-/g, '/'));
+      const time_dis = (t2 - t1) / (1000 * 3600 * 24);
+
+      return [
+        `${time}`,
+        value,
+        float2Fix((todayClose - value) / todayClose),
+        `${time_dis}天前`
+      ].join('<br>')
+    }
+  },
+  legend: {
+    data:['Now', 'Max', 'Min']
+  },
+  xAxis: {
+    data: xData,
+  },
+  yAxis: {
+    min: Math.min.apply(null, yData) - yData[0] * 0.06,
+    max: Math.max.apply(null, yData) + yData[0] * 0.06,
+  },
+  series: [{
+    name: 'Now',
+    type: 'line',
+    smooth: true,
+    data: yData,
+    markPoint: {
+        data: [
+            // {yAxis: 107.11, name: '买入', value: '买入', xAxis: '2021-02-10'},
+        ]
+    },
+  }]
+};
+
+if (Object.keys(buyPointData).length) {
+  // debugger
+  option.series[0].markPoint.data.push(buyPointData);
+  option.series[0].markPoint.data.push(sellPointData);
+}
+
+if (showMax) {
+  const maxSeries = {
+    name: 'Max',
+    type: 'line',
+    smooth: true,
+    data: listData.map(item => item.max),
+  }
+  option.series.push(maxSeries);
+}
+
+if (showMin) {
+  const minSeries = {
+    name: 'Min',
+    type: 'line',
+    smooth: true,
+    data: listData.map(item => item.min),
+  }
+  option.series.push(minSeries);
+}
+
+// 使用刚指定的配置项和数据显示图表。
+setTimeout(() => {
+  myChart.setOption(option);
+},500);
+
+console.log('chart option', option);
+
+};
+</script>
+</body>
+</html>

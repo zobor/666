@@ -1,0 +1,491 @@
+// vars
+
+$bg-color1: #efefef;
+
+$bg-color1-dark: #1B1C22;
+
+$showPanelAnimation: all 0.3s ease-in-out;
+
+body.dark {
+	.app {
+		background-color: $bg-color1-dark;
+	}
+	input {
+		background-color: #000;
+		color: #ccc;
+		border-color: #000;
+	}
+}
+
+body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+}
+
+@media screen and (min-width: 500px) {
+  body {
+    max-width: 400px;
+    position: absolute;
+    top:0;
+    left:50%;
+    right: 0;
+    bottom: 0;
+    margin-left: -188px;
+  }
+}
+
+.noselect{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/*app*/
+.app {
+	color: #4d63bc;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	position: absolute;
+	align-items: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: $bg-color1;
+	.loading {
+		text-align: center;
+		font-size: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: green;
+	}
+	.st-history-toggle {
+		margin: 20px 0;
+	}
+}
+
+/*浮动屏*/
+.countdown {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 20%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 6rem;
+}
+
+// 信息填写表单
+.st-form {
+	display: flex;
+	flex-direction: column;
+
+	p {
+		display: flex;
+		margin-top: 10px;
+		align-items: center;
+
+		label {
+			display: inline-flex;
+			width: 80px;
+		}
+
+		select {
+			height: 39px;
+		}
+	}
+
+	.button {
+		flex:1;
+		background: green;
+		color: #fff;
+		text-align: center;
+		cursor: pointer;
+		margin-top: 10px;
+		border-radius: 3px;
+		padding: 5px 0;
+		height: 30px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	input {
+		flex: 1;
+		padding: 10px 5px;
+	}
+}
+
+// 行情
+.panel {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 80%;
+	background: linear-gradient(#333, #555);
+	font-size: 14px;
+	transition: $showPanelAnimation;
+	border-radius: 15px 15px 0 0;
+	z-index: 2;
+
+	height: 0;
+	&.open {
+		height: 80%;
+		padding: 10px 10px;
+	}
+}
+
+.css-scroll {
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+	&::-webkit-scrollbar-track {
+		border-radius: 3px;
+		background: #dfdfdf;
+		box-shadow: inset 0 0 5px #eee;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 3px;
+		background: rgba(0,0,0,0.12);
+		box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+	}
+}
+
+.st-deal {
+	overflow-y: auto;
+	background-color: #dfdfdf;
+
+	&-scroll {
+		display: flex;
+	}
+
+	ul {
+		list-style: none;
+		flex: 1;
+		font-size: 12px;
+		padding: 20px 0;
+
+		li.count {
+			text-align: left;
+			font-size: 18px;
+			color: yellow;
+		}
+	}
+
+	.red{
+		color: red;
+	}
+
+	.green {
+		color: green;
+	}
+
+	.white {
+		color: #ccc;
+	}
+
+	.latest {
+		background-color: #000;
+		color: #aaa;
+	}
+	.big {
+		font-weight: 700;
+		font-size: 13px;
+	}
+}
+
+.st-current {
+	display: flex;
+	flex-direction: column;
+
+	p {
+		float: left;
+		width: 50%;
+		height: 18px;
+		line-height: 18px;
+
+
+		span {
+			margin-left: 10px;
+			color: #fff;
+		}
+
+		label {
+			display: inline-block;
+			width: 75px;
+			color: #aaa;
+		}
+	}
+
+	.time	{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10px;
+		font-weight: bold;
+		font-size: 25px;
+		color: deeppink;
+	}
+
+	.bold {
+		font-weight: bold;
+		color: yellow;
+	}
+
+	.red {
+		color: red;
+		font-weight: bold;
+	}
+
+	.green {
+		color: green;
+		font-weight: bold;
+	}
+
+	&-group {
+		border-bottom: dashed 1px #ccc;
+    padding-bottom: 5px;
+    padding-top: 5px;
+	}
+
+	.kline-pic {
+		display: flex;
+		height: 30px;
+		>span {
+			color: #fff;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 11px;
+		}
+		:nth-child(1) {
+			background-color: red;
+			justify-content: flex-start;
+		}
+		:nth-child(2) {
+			background-color: black;
+		}
+		:nth-child(3) {
+			background-color: green;
+			justify-content: flex-end;
+		}
+	}
+}
+
+.st-btns {
+	position: absolute;
+	bottom: 10px;
+	left:0;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: LightSalmon;
+	flex-wrap: wrap;
+	> div {
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+		cursor: pointer;
+		font-size: 20px;
+		padding: 0 4px;
+		&:hover {
+			color: green;
+		}
+	}
+	.flex-line {
+		width: 100%;
+		height: 0;
+	}
+}
+
+// 历史记录
+.st-history {
+	display: flex;
+	margin-top: 20px;
+	width: 100%;
+	ul {
+		padding: 30px;
+		list-style: none;
+
+		li {
+			margin-left: 30px;
+			padding: 5px 0;
+			span {
+				display: inline-flex;
+				width: 18px;
+				height: 18px;
+				border-radius: 4px;
+				background-color: #16A085;
+				color: #fff;
+				align-items: center;
+				justify-content: center;
+				margin-right: 5px;
+			}
+			a {
+				color: #5DADE2;
+				color: #16A085;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+// fav
+.st-money {
+	color:#999;
+	overflow-y: auto;
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		td {
+			padding: 0px;
+			text-align: left;
+			font-size: 13px;
+
+			&.clickable {
+				color: #2E86C1;
+			}
+		}
+		tr{
+			&:hover {
+				background-color: #666;
+				color: #ccc;
+			}
+		}
+	}
+	.red {
+		background-color: red;
+		color: #fff;
+	}
+	.green {
+		background-color: green;
+		color: #fff;
+	}
+
+	.st-iframe {
+		position: absolute;
+		top:0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: none;
+
+		&-mask {
+			position: absolute;
+			top:0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 3;
+		}
+
+		&.roate90 {
+			transform: rotate(90deg);
+		}
+	}
+
+	.table-fav-stocks {
+		td {
+			font-size: 17px;
+		}
+		.active {
+			color: #0078FF;
+		}
+	}
+
+	.table-fav-bigs {
+		td {
+			font-size: 14px;
+			text-align: center;
+		}
+	}
+}
+
+.kline-list {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	> p {
+		padding: 10px 20px;
+		background-color: #000;
+		margin: 5px;
+    border-radius: 10px;
+    height: 30px;
+    > a {
+    	display: block;
+    	text-decoration: none;
+    	color: #fff;
+    }
+		&:hover{
+			background-color: red;
+		}
+	}
+}
+
+// profit
+.profit-page {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	.content {
+		position:absolute;
+		top: 87px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow-y: auto;
+		padding-bottom: 30px;
+	}
+
+	header {
+		background-color: #16A085;
+		color: #fff;
+		padding: 10px;
+
+		>h1 {
+			font-size: 30px;
+		}
+
+		.time-profit {
+			display: flex;
+			margin-top: 10px;
+			> p {
+				flex: 1;
+			}
+		}
+	}
+
+	.profit-table {
+		border-collapse: collapse;
+		margin: 0 auto;
+		margin-top: 10px;
+		td {
+			border: solid 1px #888;
+			text-align: center;
+			padding: 2px;
+			font-size: 16px;
+			&.red {
+				color: red;
+			}
+			&.green {
+				color: green;
+			}
+		}
+	}
+}

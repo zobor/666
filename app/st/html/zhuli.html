@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZL</title>
+<style>
+table{border-collapse: collapse;font-family: Menlo, Monaco, "Courier New", monospace;font-size: 14px;-webkit-font-smoothing: auto;}
+table td{border:solid 1px #ccc;padding: 3px;}
+table.loading {outline: dashed 3px red;}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="module">
+import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex } from '../src/utils.js';
+import { favList as codeList, favMap } from '../src/config.js';
+
+const favList = codeList.filter(code => !['sh600519'].includes(code));
+const code = getUrlParam('c') || 'sz000333';
+const app = document.querySelector('#app');
+const update = async() => {
+    let list = [];
+    const timeStart = Date.now();
+    const tb = document.querySelector('table');
+    tb && tb.classList.toggle('loading');
+    for (let i = 0; i < favList.length; i ++) {
+        const code = favList[i];
+        const rs = await getZhuliRealIn(code);
+        const money = rs && rs['主力净流入'] ? rs['主力净流入'] : 0;
+        const moFormat = moneyFormat(money);
+        list.push({
+            code,
+            name: favMap[code],
+            money,
+            moFormat,
+            type: rs && rs.type,
+        });
+    }
+    const timeEnd = Date.now();
+    list = list.sort((a,b) => b.money - a.money);
+    const rank = list.findIndex(item => item.code === code);
+    const codeItem = list.find(item => item.code === code);
+    document.title = `zl:${rank+1}/${list.length}/${codeItem.moFormat}`;
+
+    // table
+    const table = ['<table>'];
+    list.map(item => {
+        table.push(`
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.moFormat}</td>
+                <td>${item.type}</td>
+            </tr>
+        `);
+    });
+    table.push('</table>');
+    const time = ((timeEnd - timeStart)/1000).toFixed(1);
+    table.push(`<div>updateTime: ${time}s</div>`);
+    app.innerHTML = table.join('');
+    tb && tb.classList.toggle('loading');
+};
+
+
+(async() => {
+    await update();
+    setInterval(async() => {
+        await update();
+    }, 2000);
+})();
+</script>
+</body>
+</html>

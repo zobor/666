@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MA</title>
+<style>
+.header {display: flex;margin-bottom: 10px;}
+.stat{border-collapse: collapse;font-size: 14px;}
+.stat td {border:solid 1px #ccc; padding: 1px 2px;}
+.ranger {margin-left: 4px;}
+.ranger input {border: solid 1px #ccc; outline: none; padding: 10px 20px; border-radius: 10px;width: 40px;}
+
+#app {font-size: 20px;}
+.list{border-collapse: collapse;}
+.list td{color: #ccc; padding: 0 3px;border:solid 1px #efefef;font-size: 21px}
+.list .down {color: #ccc;border-right: solid 1px #eee;}
+.list .up {color: #000;font-weight: bold;border-right: solid 3px #000;}
+.list .max {color: red;font-weight: bold;}
+.list .min {color: green;font-weight: bold;}
+
+.list .avaDiff {color: #999;}
+.list .avaPrice {color: #ddd;}
+.list .time {color: #ddd;}
+.list .ltAva {font-size: 13px;}
+.list .gtAva {font-weight: bold;}
+
+</style>
+</head>
+<body>
+<div class="header">
+	<div id="table"></div>
+	<div class="ranger">
+		<input type="text" id="filter" />
+	</div>
+</div>
+<div id="app"></div>
+<script type="module">
+import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex, gethk2china } from '../src/utils.js';
+
+const update = async() => {
+
+const code = getUrlParam('c') || 'sz000333';
+const rs = await getMinutesKline(code);
+const prices = {};
+rs.list.map(item => {
+	prices[item.time] = item.close;
+});
+const priceList = rs.list.map(item => item.close);
+
+if (window.limit) {
+	rs.list = rs.list.slice(0, window.limit);
+}
+const closeList = rs.list.map(item=>item.close).reverse();
+const datas = getMACD(closeList);
+const { macd, dif, dea } = datas;
+const maxClose = Math.max.apply(null, closeList);
+const minClose = Math.min.apply(null, closeList);
+
+let dataList = [];
+window.aa = dataList;
+const fixedLength = 3;
+
+macd.map((item, idx) => {
+	if (rs.list[idx].time === '09:30') {
+		return;
+	}
+
+	const time = rs.list[idx].time;
+	const close = prices[time];
+	dataList.push({
+		macd: Number(item.toFixed(fixedLength)),
+		dif: Number(dif[idx].toFixed(fixedLength)),
+		dea: Number(dea[idx].toFixed(fixedLength)),
+		time,
+		close,
+	});
+});
+
+dataList.map((item, idx) => {
+	const prev = dataList[idx + 1];
+	// const next = dataList[idx - 1];
+	// 最近一条
+	if (prev) {
+		if (item.dif <= prev.dif) {
+			item.difDirection = 'down';
+		} else {
+			item.difDirection = 'up';
+		}
+		// dea
+		if (item.dea <= prev.dea) {
+			item.deaDirection = 'down';
+		} else {
+			item.deaDirection = 'up';
+		}
+
+		// 平均价格
+		const prevPrices = dataList.slice(idx + 1).map(item => item.close);
+		const avaPrice = prevPrices.reduce((aac, cur) => {
+			return aac + cur;
+		}) / prevPrices.length;
+		item.avaPrice = Number(avaPrice.toFixed(2));
+		item.avaDiff = float2Fix((item.close - avaPrice) / avaPrice);
+	}
+});
+
+dataList = dataList.filter(item => item.avaPrice);
+
+const difList = dataList.map(item => item.dif);
+const maxDif = Math.max.apply(null, difList);
+const minDif = Math.min.apply(null, difList);
+
+const html = ['<table class="list">'];
+
+html.push(`
+<tr>
+<td>time</td>
+<td>dif</td>
+<td>dea</td>
+<td>macd</td>
+<td>price</td>
+<td>ava</td>
+<td>avDif</td>
+</tr>
+`)
+
+dataList.map(item => {
+	html.push(`<tr class="${classnames({
+		// up: item.macd > 0 ,
+	})}">
+		<td class="time">${item.time}</td>
+		<td class="${classnames({
+			'down': item.difDirection === 'down',
+			'up': item.difDirection === 'up',
+			'max': item.dif === maxDif,
+			'min': item.dif === minDif,
+		})}">${item.dif}</td>
+		<td class="${classnames({
+			'down': item.deaDirection === 'down',
+			'up': item.deaDirection === 'up',
+		})}">${item.dea}</td>
+		<td>${item.macd}</td>
+		<td class="${classnames({
+			'max': item.close === maxClose,
+			'min': item.close === minClose,
+			'gtAva': item.close > item.avaPrice,
+			'ltAva': item.close <= item.avaPrice,
+		})}">${item.close}</td>
+		<td class="avaPrice">${item.avaPrice}</td>
+		<td class="avaDiff">${item.avaDiff}</td>
+	</tr>`);
+});
+
+html.push('</table>');
+
+document.querySelector('#app').innerHTML = html.join('');
+
+
+// 行情分析
+const zhuli = await getZhuliRealIn(code);
+const zhishu = await loadIndex();
+const bx = await gethk2china();
+const up = dataList.filter(item => item.macd >0).length;
+const upAvaPriceCount = dataList.filter(item => item.close > item.avaPrice).length;
+const table = `
+<table class="stat">
+	<tr>
+	  <td>difUp: ${float2Fix(up / dataList.length)}</td>
+	  <td>avUp:${float2Fix(upAvaPriceCount / dataList.length)}</td>
+	  <td>Big:${zhuli && zhuli['主力净流入'] && moneyFormat(zhuli['主力净流入'])}</td>
+	  <td>bx:${bx.hk2cn}</td>
+	</tr>
+	<tr>
+		<td>sh:${zhishu && zhishu.sh_rate}</td>
+		<td>sz:${zhishu && zhishu.sz_rate}</td>
+		<td>sz2:${zhishu && zhishu.sz2_rate}</td>
+		<td>300:${zhishu && zhishu.hs300_rate}</td>
+	</tr>
+</table>
+`;
+document.querySelector('#table').innerHTML = table;
+
+};
+
+
+(async() => {
+	await update();
+	setInterval(async() => {
+		await update();
+	}, 1400);
+	document.querySelector('#filter').addEventListener('input', async e => {
+		const v = e.target.value.trim();
+		if (v === '') {
+			v = 0;
+		} else if (!/^\d+$/.test(v)) {
+			return;
+		}
+		window.limit = Number(v);
+		await update();
+	});
+})();
+</script>
+</body>
+</html>

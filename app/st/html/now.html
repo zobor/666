@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="../assets/favicon.png">
+  <title>实时</title>
+</head>
+<body>
+
+<style tyle="text/css">
+*{margin: 0;padding: 0;}
+body{ font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;text-size-adjust: 100%;}
+body{position: absolute;top:0;left:0;right:0;bottom:0;}
+table{border-collapse: collapse; float: left; margin: 0px;color: #ddd;border-right: solid 2px #ccc;}
+td{border: solid 1px #ccc; padding: 2px; text-align: center;font-size:
+  15px;color: #eee;}
+
+table.trend-up{border-right: solid 2px #e83e8c;}
+table.trend-down{border-right: solid 2px #009A61;}
+#app>:nth-child(1),#app>:nth-child(2){border-right: solid 2px #ccc;}
+#app>:nth-child(1){margin-right: 50px;}
+/*第2个表格 第一行 第一二个td*/
+#app>:nth-child(2) tr:nth-child(1) td:nth-child(1),#app>:nth-child(3)
+tr:nth-child(1) td:nth-child(2){color: #bbb;}
+
+tr.super-deal{font-weight: bold;}
+tr.big-deal{color: #000;font-weight: bold;}
+tr.rise-up :nth-child(4){color: #e83e8c;color: #F5B7B1;}
+tr.super-deal.rise-up td{color: #e83e8c; color: #F5B7B1;}
+tr.rise-down :nth-child(4){color: #7DCEA0}
+tr.super-deal.rise-down td{color: #7DCEA0}
+tr.max-all td{color: #fff!important;background-color: #e83e8c;border-color: #e83e8c;}
+tr.min-all td{color: #fff!important;background-color: #009A61;border-color: #009A61;}
+B
+tr.current-max td{border-bottom-color: #e83e8c;}
+tr.current-max td:nth-child(2){border-bottom-color: #e83e8c;color: #e83e8c;font-style: italic;text-decoration: underline;background-color: #e83e8c; color: #fff;}
+tr.current-min td{border-bottom-color: #009A61;}
+tr.current-min td:nth-child(2){border-bottom-color: #009A61;color:#009A61;font-style: italic;text-decoration: underline;background-color: #009A61; color: #fff;}
+tr td .top-rank{font-weight: bold;color:blue;}
+
+/* ma */
+#ma{position: fixed;right:10px;bottom:2px;background-color: #fff;}
+#ma table {border:solid 2px #000;}
+#ma td{color: #666;}
+#ma tr:nth-child(1),#ma tr:nth-child(4){font-weight:bold;}
+#ma td.support{color: #e83e8c;}
+#ma td.pressure{color: #009A61;}
+
+/*hq*/
+#hq{position: fixed;right:10px;bottom:150px;background-color: #fff;}
+#hq table {border:solid 2px #000;}
+#hq table td {color: #333;}
+
+/*time*/
+#time {position: absolute;top: 50%;left: 50%;font-size: 160px; margin-left: -770px;margin-top: -220px;}
+
+/*显影开关*/
+body.hide table { visibility: hidden; }
+body #time {visibility: hidden;}
+body.hide #time {visibility: visible;}
+</style>
+
+<style>
+@media screen and (max-width: 500px) {
+  body{position: absolute;top:0;left:0;right:0;bottom: 0;}
+  #app{display: flex;position: absolute;top: 150px; left: 0;width: 100vw;overflow-y: hidden;}
+  #app table {width: 250px;}
+  #ma{position:absolute; left:0; right: auto; bottom: auto;top: 0; }
+}
+</style>
+
+<div id="app"></div>
+<div id="ma"></div>
+<div id="hq"></div>
+<div id="time"></div>
+
+<script>
+window.rankIndexMap = {
+  1: '①',
+  2: '②',
+  3: '③',
+  4: '④',
+  5: '⑤',
+  6: '⑥',
+  7: '⑦',
+  8: '⑧',
+  9: '⑨',
+  10: '⑩',
+};
+</script>
+
+<script>
+document.write(`<script type="module" src="now.js?t=${Date.now()}"><\/script>`);
+</script>
+</body>
+</html>

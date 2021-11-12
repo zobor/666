@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CSS3倒计时</title>
+  <link rel="stylesheet" href="../src/index.css">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/apple-touch-icon-144-precomposed.png">
+	<style>
+		* {margin: 0; padding: 0;}
+		body { font-family: -apple-system,system-ui,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;  }
+		.loading {display: flex;align-items: center;justify-content: center; color: red;position: absolute;top:0;left: 0; width: 100%; height: 100%;font-size: 30px;}
+	</style>
+</head>
+<body class="noselect">
+
+<script>window.assetId = '1622118290339';</script>
+
+<div id="app" class="app">
+	<div class="loading">loading...</div>
+</div>
+
+<script type="text/javascript">
+const list1 = `
+countUp.umd.js
+babel-standalone.min.js
+react.production.min.js
+react-dom.production.min.js
+sass.js
+`;
+document.write(list1.split(/\n/).filter(item => item).map(item => `<script type="text/javascript"  src="../lib/${item}"><\/script>`).join(''));
+</script>
+
+<script type="text/javascript">
+const list2 = `
+utils.js
+config.js
+profit-data.js
+countDown.jsx
+form.jsx
+myHistory.jsx
+current.jsx
+buttomGroups.jsx
+deals.jsx
+bxMoney.jsx
+hots.jsx
+fav.jsx
+zhuLiHistory.jsx
+kline.jsx
+zhuLiDaDan.jsx
+profit.jsx
+
+app.jsx
+index.jsx
+`;
+document.write(list2.split(/\n/).filter(item => item).map(item => `<script type="text/babel" data-plugins="transform-es2015-modules-umd" src="../src/${item}?asset=${window.assetId}"><\/script>`).join(''));
+</script>
+
+
+<footer>
+  <script type="text/javascript">location.hostname !== 'localhost' && document.write(unescape("%3Cspan id='cnzz_stat_icon_1278865075'%3E%3C/span%3E%3Cscript src='https://s4.cnzz.com/z_stat.php%3Fid%3D1278865075%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+</footer>
+</body>
+</html>

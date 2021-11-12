@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>chart</title>
+<style>
+* {margin: 0; padding: 0;}
+#app {
+  position: absolute;
+  background: #efefef;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+<script>
+const rand = (min, max) => {
+return parseInt(Math.random() * (max - min + 1) + min, 10);
+};
+const float2Fix = (num, bit = 2) => {
+const rate = parseInt(num * 10 ** (bit + 2).toString(), 10) / 10 ** bit;
+return `${rate}%`;
+};
+const getUrlParam = (name) => {
+  const name2 = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+  const regex = new RegExp(`[\\?&]${name2}=([^&#]*)`);
+  const results = regex.exec(window.location.search);
+  return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+</script>
+</head>
+<body>
+
+<div id="app"></div>
+<script src="../lib/echarts.min.js"></script>
+
+<script type="module">
+import { getClose, formatDate } from '../src/utils.js';
+window.getClose = getClose;
+window.formatDate = formatDate;
+</script>
+
+<script type="text/javascript">
+window.onorientationchange = () => {
+  setTimeout(() => {
+    window.location.reload();
+  }, 500);
+};
+window.onload = async() => {
+const code = getUrlParam('c');
+const len = getUrlParam('len');
+if (!code) return;
+
+const data = await getClose(code);
+data.map(item => {
+  item.day = formatDate(item.time);
+});
+const current = data[0];
+
+const myChart = echarts.init(document.getElementById('app'));
+const listData = data.slice(0, len ? Number(len) : 10).reverse();
+let xData = listData.map(item => item.day);
+let yData = listData.map(item => item.low);
+let yData2 = listData.map(item => item.high);
+
+const option = {
+  title: {
+    text: code,
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    formatter: function(datas) {
+      const [data1, data2] = datas;
+      const { name } = data1;
+      const { value: low } = data1;
+      const { value: high } = data2;
+      console.log(datas);
+
+      return [
+        `时间: ${name}`,
+        `最高: ${high}`,
+        `最低: ${low}`,
+        `振幅: ${float2Fix((high - low) / low)}`
+      ].join('<br>')
+    }
+  },
+  legend: {
+    data:['销量', 'Max', 'Min']
+  },
+  xAxis: {
+    data: xData,
+  },
+  yAxis: {
+    min: parseInt((Math.min.apply(null, yData.concat(yData2)) * 1), 10),
+    max: parseInt((Math.max.apply(null, yData.concat(yData2)) * 1), 10),
+  },
+  series: [{
+    name: '最低',
+    type: 'line',
+    smooth: true,
+    data: yData,
+    markPoint: {
+        data: []
+    },
+  }, {
+    name: '最高',
+    type: 'line',
+    smooth: true,
+    data: yData2,
+    markPoint: {
+        data: []
+    },
+  }]
+};
+
+// 使用刚指定的配置项和数据显示图表。
+setTimeout(() => {
+  myChart.setOption(option);
+},500);
+
+console.log('chart option', option);
+
+};
+</script>
+</body>
+</html>

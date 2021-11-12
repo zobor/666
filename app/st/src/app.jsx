@@ -3,7 +3,6 @@ import { Current } from './current';
 import { STForm } from './form';
 import { ButtomGroups } from './buttomGroups';
 import { Deals } from './deals';
-import { STHistory } from './myHistory';
 import { BxMoney } from './bxMoney';
 import { Hots } from './hots';
 import { Fav } from './fav';
@@ -123,22 +122,18 @@ export const App = ({ context }) => {
 
   return (
     <Fragment>
-      {!useDataPage ? <Fragment>
-        <STForm />
-        <h2 onClick={toggleHistory} className="st-history-toggle">history</h2>
-        {isShowHistory ? <STHistory /> : null}
-      </Fragment> : null}
+      {!useDataPage ? <STForm /> : null}
       {useDataPage ? (
         <Fragment>
           <CoundDown data={countDownData} />
           <Current data={current} toggleShowCurrent={toggleShowCurrent} />
-          <Deals data={{code: context.code}} />
-          <BxMoney data={{code: context.code}}/>
-          <Hots data={{code: context.code}}/>
+          <Deals data={{ code: context.code }} />
+          <BxMoney data={{ code: context.code }} />
+          <Hots data={{ code: context.code }} />
           <Fav />
           <FavZhuLiDaDan />
-          <ZhuLiHistory data={{code: context.code}} />
-          <Kline data={{code: context.code}} />
+          <ZhuLiHistory data={{ code: context.code }} />
+          <Kline data={{ code: context.code }} />
           <ButtomGroups />
         </Fragment>
       ) : null}

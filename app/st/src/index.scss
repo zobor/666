@@ -59,6 +59,7 @@ body {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	overflow: hidden;
 	background-color: $bg-color1;
 	.loading {
 		text-align: center;
@@ -130,10 +131,11 @@ body {
 // 行情
 .panel {
 	position: absolute;
-	bottom: 0;
+	bottom: -100vh;
 	left: 0;
 	right: 0;
-	height: 80%;
+	height: 0;
+	opacity: 0;
 	background: linear-gradient(#333, #555);
 	font-size: 14px;
 	transition: $showPanelAnimation;
@@ -142,7 +144,9 @@ body {
 
 	height: 0;
 	&.open {
+		opacity: 1;
 		height: 80%;
+		bottom: 0;
 		padding: 10px 10px;
 	}
 }

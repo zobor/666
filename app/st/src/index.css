@@ -113,19 +113,22 @@ body {
 
 .panel {
   position: absolute;
-  bottom: 0;
+  bottom: -100vh;
   left: 0;
   right: 0;
-  height: 80%;
+  height: 0;
   background: linear-gradient(#333, #555);
   font-size: 14px;
   transition: all 0.3s ease-in-out;
   border-radius: 15px 15px 0 0;
   z-index: 2;
   height: 0;
+  opacity: 0;
 }
 .panel.open {
   height: 80%;
+  bottom: 0;
+  opacity: 1;
   padding: 10px 10px;
 }
 

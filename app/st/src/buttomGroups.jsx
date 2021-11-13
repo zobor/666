@@ -12,8 +12,6 @@ export const ButtomGroups = () => {
     <div className="flex-line" />
     <div onClick={onClick.bind(null, 'onClickInfo')}>♬个股详情</div>
     <div onClick={onClick.bind(null, 'onClickDeal')}>♬个股大单</div>
-    <div onClick={onClick.bind(null, 'onClickMoney')}>♬个股北向</div>
-    <div onClick={onClick.bind(null, 'onClickZhuLiHistory')}>♬个股主力</div>
     <div onClick={onClick.bind(null, 'onClickKline')}>♬K线图</div>
     <div className="flex-line" />
     <div onClick={onClick.bind(null, 'onClickFav')}>♥自选列表</div>

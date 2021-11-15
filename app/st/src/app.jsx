@@ -6,9 +6,7 @@ import { Deals } from './deals';
 import { BxMoney } from './bxMoney';
 import { Hots } from './hots';
 import { Fav } from './fav';
-import { ZhuLiHistory } from './zhuLiHistory'
 import { Kline } from './kline';
-import { FavZhuLiDaDan } from './zhuLiDaDan';
 
 import {
   loadCode,
@@ -131,8 +129,6 @@ export const App = ({ context }) => {
           <BxMoney data={{ code: context.code }} />
           <Hots data={{ code: context.code }} />
           <Fav />
-          <FavZhuLiDaDan />
-          <ZhuLiHistory data={{ code: context.code }} />
           <Kline data={{ code: context.code }} />
           <ButtomGroups />
         </Fragment>

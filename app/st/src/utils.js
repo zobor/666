@@ -786,9 +786,6 @@ export const getHistory = async (code) => {
     ma60: Number(ma60.toFixed(2)),
     macd: Number(macd[0]).toFixed(1),
     macdCross: macd[0] > 0 && macd[1] <= 0 && macd[2] < 0 && macd[3] < 0,
-    lastYearClose: list
-      .reverse()
-      .filter((item) => item.timeString === '2020-12-31')[0].close,
     prev5Rate: float2Fix((list3[0].close - list3[4].close) / list3[0].close),
     prev10Rate: float2Fix((list3[0].close - list3[9].close) / list3[0].close),
     prev30Rate: float2Fix((list3[0].close - list3[29].close) / list3[0].close),
@@ -861,9 +858,6 @@ export const calcCurrentAndHistory = (current, history) => {
   data.ma30_rate = float2Fix((current.now - history.ma30) / history.ma30);
   data.ma60_rate = float2Fix((current.now - history.ma60) / history.ma60);
   data.min30_rate = float2Fix((current.now - history.min30) / history.min30);
-  data.lastYearToday = float2Fix(
-    (current.now - history.lastYearClose) / history.lastYearClose
-  );
 
   return data;
 };

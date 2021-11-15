@@ -15,7 +15,6 @@ export const ButtomGroups = () => {
     <div onClick={onClick.bind(null, 'onClickKline')}>♬K线图</div>
     <div className="flex-line" />
     <div onClick={onClick.bind(null, 'onClickFav')}>♥自选列表</div>
-    <div onClick={onClick.bind(null, 'onClickFavDaDan')}>♥自选主力</div>
     <div className="flex-line" />
     <div onClick={onClick.bind(null, 'onClickHots')}>☀热门</div>
   </div>

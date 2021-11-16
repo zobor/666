@@ -163,7 +163,7 @@ export const trigger = (obj, type) => {
       evt.synthetic = true;
       obj.dispatchEvent(evt, true);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 };

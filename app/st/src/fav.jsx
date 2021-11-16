@@ -11,6 +11,9 @@ const { useEffect, useState, useRef, useCallback } = React;
 const sum = (arr) => {
   return arr.reduce((aac, cur) => (aac + cur), 0);
 }
+const rateToNumber = (rate) => {
+  return Number(`${rate}`.replace(/%/g, ''));
+}
 
 export const Fav = ({data = {}}) => {
   const dom = useRef(null);
@@ -64,7 +67,6 @@ export const Fav = ({data = {}}) => {
       const tasks = favList.map(code => () => new Promise((resolve) => {
         loadBigDeal(code).then(rs => {
           if (rs && rs.list) {
-            console.log(rs.name, rs)
             const bList = rs.list.filter(item => item.BS === 'B');
             const sList = rs.list.filter(item => item.BS === 'S');
             const s = {
@@ -80,7 +82,6 @@ export const Fav = ({data = {}}) => {
             s.pure = s.buy - s.sell;
             s.pure_1000 = s.b_1000 - s.s_1000;
             s.pure_500 = s.b_500 - s.s_500;
-            console.log(s);
             l2.push(s);
           }
           resolve(true);
@@ -113,7 +114,7 @@ export const Fav = ({data = {}}) => {
           </tr>
         </thead>
         {
-          state.map(item => (
+          state.sort((a,b) => rateToNumber(b.data.up_down) - rateToNumber(a.data.up_down)).map(item => (
             <tr>
               <td className="clickable" onClick={goCodeDetail.bind(null, item.code,100, item.data.todayOpen)}>{item.data.name}</td>
               <td>{moneyFormat(item.data.deal_total) || '...'}</td>

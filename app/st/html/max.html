@@ -79,7 +79,6 @@ const option = {
       const { name } = data1;
       const { value: low } = data1;
       const { value: high } = data2;
-      console.log(datas);
 
       return [
         `时间: ${name}`,
@@ -96,8 +95,10 @@ const option = {
     data: xData,
   },
   yAxis: {
-    min: parseInt((Math.min.apply(null, yData.concat(yData2)) * 1), 10),
-    max: parseInt((Math.max.apply(null, yData.concat(yData2)) * 1), 10),
+    min: parseInt(
+      (Math.min.apply(null, yData.concat(yData2)) * 1) * 0.98, 10),
+    max: parseInt(
+      (Math.max.apply(null, yData.concat(yData2)) * 1) * 1.02, 10),
   },
   series: [{
     name: '最低',

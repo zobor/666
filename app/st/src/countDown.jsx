@@ -2,9 +2,6 @@
 const { useEffect, useRef } = React;
 
 export const CoundDown = ({data}) => {
-	if (location.hostname === 'localhost') {
-		// return '';
-	}
 	const dom = useRef(null);
 	const app = useRef(null);
 	useEffect(() => {
@@ -19,7 +16,10 @@ export const CoundDown = ({data}) => {
 		if (!data.now) {
 			return;
 		}
-		const profit = parseInt((data.now - data.buy) * data.sum);
+		const per = 53 / 42500;
+		const cost = data.buy * data.sum;
+		const fee = parseInt(cost * per);
+		const profit = parseInt((data.now - data.buy) * data.sum) - fee;
 		app.current.update(profit);
 		document.title = profit.toFixed(0) + '[' + data.now + '][' + data.up_down + ']';
 	}, [data]);

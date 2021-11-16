@@ -3,7 +3,6 @@ import { Current } from './current';
 import { STForm } from './form';
 import { ButtomGroups } from './buttomGroups';
 import { Deals } from './deals';
-import { BxMoney } from './bxMoney';
 import { Hots } from './hots';
 import { Fav } from './fav';
 import { Kline } from './kline';
@@ -126,7 +125,6 @@ export const App = ({ context }) => {
           <CoundDown data={countDownData} />
           <Current data={current} toggleShowCurrent={toggleShowCurrent} />
           <Deals data={{ code: context.code }} />
-          <BxMoney data={{ code: context.code }} />
           <Hots data={{ code: context.code }} />
           <Fav />
           <Kline data={{ code: context.code }} />

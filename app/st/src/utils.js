@@ -305,7 +305,7 @@ export const gethk2china = async () => {
     return cache.gethk2china;
   }
   const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
-  const url = `http://push2.eastmoney.com/api/qt/kamt/get?cb=${cb}&fields1=f1%2Cf2%2Cf3%2Cf4&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf63&ut=b2884a393a59ad64002292a3e90d46a5&_=${Date.now()}`;
+  const url = `//push2.eastmoney.com/api/qt/kamt/get?cb=${cb}&fields1=f1%2Cf2%2Cf3%2Cf4&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf63&ut=b2884a393a59ad64002292a3e90d46a5&_=${Date.now()}`;
   const rs = await jsonp(url, cb);
   const data = {
     hk2sh: rs.data.hk2sh.netBuyAmt,
@@ -325,7 +325,7 @@ export const gethk2china = async () => {
 export const getMinutesKline = async (code) => {
   const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
   const type = code.indexOf('sz') > -1 ? '0' : '1';
-  const url = `http://push2.eastmoney.com/api/qt/stock/trends2/get?cb=${cb}&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf11%2Cf12%2Cf13&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58&ut=fa5fd1943c7b386f172d6893dbfba10b&ndays=1&iscr=0&iscca=0&secid=${type}.${code.replace(/^[a-z]{2}/,'')}&_=${Date.now()}`;
+  const url = `//push2.eastmoney.com/api/qt/stock/trends2/get?cb=${cb}&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8%2Cf9%2Cf10%2Cf11%2Cf12%2Cf13&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58&ut=fa5fd1943c7b386f172d6893dbfba10b&ndays=1&iscr=0&iscca=0&secid=${type}.${code.replace(/^[a-z]{2}/,'')}&_=${Date.now()}`;
   const rs = await jsonp(url, cb);
   const { trends } = rs.data;
   const list = trends.map((item, idx) => {
@@ -362,7 +362,7 @@ export const gethk2st = async (code) => {
   const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
   const c = code.replace(/\D+/, '');
   const type = code.indexOf('sz') > -1 ? 'SGT' : 'HGT';
-  const url = `http://dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?callback=${cb}&st=DetailDate&sr=-1&ps=100&p=1&type=HSGTCJB&sty=${type}&token=70f12f2f4f091e459a279469fe49eca5&cmd=${c}&js=%7B%22data%22%3A(x)%2C%22pages%22%3A(tp)%7D`;
+  const url = `//dcfm.eastmoney.com/em_mutisvcexpandinterface/api/js/get?callback=${cb}&st=DetailDate&sr=-1&ps=100&p=1&type=HSGTCJB&sty=${type}&token=70f12f2f4f091e459a279469fe49eca5&cmd=${c}&js=%7B%22data%22%3A(x)%2C%22pages%22%3A(tp)%7D`;
   const rs = await jsonp(url, cb);
 
   const data = rs.data.map((item) => {
@@ -390,7 +390,7 @@ export const gethk2st = async (code) => {
 // 热门概念
 export const getConceptMoney = async () => {
   const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
-  const url = `http://push2.eastmoney.com/api/qt/clist/get?cb=${cb}&fid=f62&po=1&pz=10&pn=1&np=1&fltt=2&invt=2&fs=m%3A90+t%3A3&stat=1&fields=f12%2Cf14%2Cf2%2Cf3%2Cf62%2Cf184%2Cf66%2Cf69%2Cf72%2Cf75%2Cf78%2Cf81%2Cf84%2Cf87%2Cf204%2Cf205%2Cf124&ut=b2884a393a59ad64002292a3e90d46a5`;
+  const url = `//push2.eastmoney.com/api/qt/clist/get?cb=${cb}&fid=f62&po=1&pz=10&pn=1&np=1&fltt=2&invt=2&fs=m%3A90+t%3A3&stat=1&fields=f12%2Cf14%2Cf2%2Cf3%2Cf62%2Cf184%2Cf66%2Cf69%2Cf72%2Cf75%2Cf78%2Cf81%2Cf84%2Cf87%2Cf204%2Cf205%2Cf124&ut=b2884a393a59ad64002292a3e90d46a5`;
   const rs = await jsonp(url, cb);
   const data = rs.data.diff.map((item) => ({
     name: item.f14,
@@ -408,7 +408,7 @@ export const getStockZhuliHistory = async (code) => {
   const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
   const c = code.replace(/\D+/, '');
   const type = code.indexOf('sz') > -1 ? '0' : '1';
-  const url = `http://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get?cb=${cb}&lmt=0&klt=101&fields1=f1%2Cf2%2Cf3%2Cf7&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf62%2Cf63%2Cf64%2Cf65&ut=b2884a393a59ad64002292a3e90d46a5&secid=${type}.${c}&_=${Date.now()}`;
+  const url = `//push2his.eastmoney.com/api/qt/stock/fflow/daykline/get?cb=${cb}&lmt=0&klt=101&fields1=f1%2Cf2%2Cf3%2Cf7&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf62%2Cf63%2Cf64%2Cf65&ut=b2884a393a59ad64002292a3e90d46a5&secid=${type}.${c}&_=${Date.now()}`;
   const rs = await jsonp(url, cb);
   const data = rs.data.klines
     .map((item) => {
@@ -436,7 +436,7 @@ export const getStockZhuliHistory = async (code) => {
 // 主力资金流向个股
 export const getZhuLiMoneyFlow = async () => {
   const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
-  const url = `http://push2.eastmoney.com/api/qt/clist/get?cb=${cb}&fid=f62&po=1&pz=50&pn=1&np=1&fltt=2&invt=2&ut=b2884a393a59ad64002292a3e90d46a5&fs=m%3A0%2Bt%3A6%2Bf%3A!2%2Cm%3A0%2Bt%3A13%2Bf%3A!2%2Cm%3A0%2Bt%3A80%2Bf%3A!2%2Cm%3A1%2Bt%3A2%2Bf%3A!2%2Cm%3A1%2Bt%3A23%2Bf%3A!2%2Cm%3A0%2Bt%3A7%2Bf%3A!2%2Cm%3A1%2Bt%3A3%2Bf%3A!2&fields=f12%2Cf14%2Cf2%2Cf3%2Cf62%2Cf184%2Cf66%2Cf69%2Cf72%2Cf75%2Cf78%2Cf81%2Cf84%2Cf87%2Cf204%2Cf205%2Cf124`;
+  const url = `//push2.eastmoney.com/api/qt/clist/get?cb=${cb}&fid=f62&po=1&pz=50&pn=1&np=1&fltt=2&invt=2&ut=b2884a393a59ad64002292a3e90d46a5&fs=m%3A0%2Bt%3A6%2Bf%3A!2%2Cm%3A0%2Bt%3A13%2Bf%3A!2%2Cm%3A0%2Bt%3A80%2Bf%3A!2%2Cm%3A1%2Bt%3A2%2Bf%3A!2%2Cm%3A1%2Bt%3A23%2Bf%3A!2%2Cm%3A0%2Bt%3A7%2Bf%3A!2%2Cm%3A1%2Bt%3A3%2Bf%3A!2&fields=f12%2Cf14%2Cf2%2Cf3%2Cf62%2Cf184%2Cf66%2Cf69%2Cf72%2Cf75%2Cf78%2Cf81%2Cf84%2Cf87%2Cf204%2Cf205%2Cf124`;
   const rs = await jsonp(url, cb);
   const data = rs.data.diff.map((item) => ({
     name: item.f14,
@@ -636,7 +636,7 @@ export const loadBigDeal = async (code, amount = 500) => {
     1000: 13,
   };
   await loadScript(
-    `http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=${code}&max=200&p=1&opt=${amountMap[amount]}&o=0`
+    `//stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=${code}&max=200&p=1&opt=${amountMap[amount]}&o=0`
   );
   const data = window[`v_dadan_data_${code}`];
 

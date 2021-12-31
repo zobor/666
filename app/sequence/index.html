@@ -32,6 +32,13 @@ textarea{width:100%;height:  100%;padding: 50px; box-sizing: border-box;outline:
 <script>
 const $diagram = document.querySelector('#diagram');
 const $input = document.querySelector('textarea');
+const example = `
+Title: Here is a title
+A->B: Normal line
+B-->C: Dashed line
+C->>D: Open arrow
+D-->>A: Dashed open arrow
+`;
 const render = (txt) => {
 	try {
 		var d = Diagram.parse(txt);
@@ -44,7 +51,9 @@ const render = (txt) => {
 };
 $input.addEventListener('keyup', (e) => {
 	render(e.target.value);
-})
+});
+$input.value = example;
+render(example);
 </script>
 </body>
 </html>

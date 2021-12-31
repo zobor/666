@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 阴影</title>
+</head>
+<body>
+
+<style>
+  ul, li { list-style: none;}
+  ul {width: 600px;height: 600px;display: flex;flex-direction: row;flex-wrap: wrap;}
+  li { width: 30px; height: 30px; }
+  /* ul {width: 600px;height: 600px; margin: 0 auto;}
+  li { width: 30px; height: 30px; background-color: #fff; margin: 0; float: left; text-align: center; line-height: 30px; cursor: pointer;} */
+</style>
+<ul></ul>
+<script src="./color-data.js"></script>
+<script>
+const copy = (target, text) => {
+  const copyText = (e) => {
+    e.preventDefault();
+    if (e.clipboardData) {
+      e.clipboardData.setData('text/plain', text);
+    } else if (window.clipboardData) {
+      window.clipboardData.setData('Text', text);
+    }
+  };
+  target.addEventListener('copy', copyText);
+  document.execCommand('copy');
+  target.removeEventListener('copy', copyText);
+};
+
+// const frag = document.createElement('fragment');
+const fragment = document.createDocumentFragment();
+window.$DATA.forEach((text, index) => {
+  const li = document.createElement('li');
+  li.style.background = text;
+  // li.innerHTML = '#' + index + 1;
+  fragment.appendChild(li);
+});
+document.querySelector('ul').appendChild(fragment);
+document.querySelector('ul').addEventListener('click', e => {
+  if (e.target.tagName.toLowerCase() === 'li') {
+    const { target } = e;
+    copy(target, target.style.cssText);
+  }
+})
+</script>
+</body>
+</html>

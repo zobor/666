@@ -20,7 +20,7 @@ const render = () => {
 };
 
 (async () => {
-  if (location.hostname !== 'regx.vip') {
+  if (location.hostname !== 'zobor.github.io') {
     await window.styleInit();
   }
   render();

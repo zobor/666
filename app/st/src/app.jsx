@@ -124,7 +124,7 @@ export const App = ({ context }) => {
         <Fragment>
           <CoundDown data={countDownData} />
           <Current data={current} toggleShowCurrent={toggleShowCurrent} />
-          <Deals data={{ code: context.code }} />
+          <Deals data={{ code: context.code, current }} />
           <Hots data={{ code: context.code }} />
           <Fav />
           <Kline data={{ code: context.code }} />

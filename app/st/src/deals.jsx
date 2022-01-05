@@ -26,7 +26,7 @@ const isBig = (str) => {
 export const Deals = ({data = {}}) => {
   const [list, setList] = useState([]);
   const [latestHour, setLatestHour] = useState(0);
-  const {code} = data;
+  const {code, current} = data;
   const dom = useRef(null);
   const timer = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +83,7 @@ export const Deals = ({data = {}}) => {
                 [cls[item.BS]]: true,
                 latest: getHourFromTimeString(item.time) === latestHour,
                 big: isBig(item.deal),
+                [current < item.price ? 'gt' : 'lt']: true,
               })}>
                 {item.time} {item.price} {item.shou}手 {item.deal}
               </li>
@@ -95,6 +96,7 @@ export const Deals = ({data = {}}) => {
                 [cls[item.BS]]: true,
                 latest: getHourFromTimeString(item.time) === latestHour,
                 big: isBig(item.deal),
+                [current < item.price ? 'gt' : 'lt']: true,
               })}>
                 {item.time} {item.price} {item.shou}手 {item.deal}
               </li>

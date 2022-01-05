@@ -9,13 +9,14 @@
 <body>
 
 <style>
+  * {margin: 0; padding:0;}
+  .box {display: flex;width: 600px;margin: 0 auto;transform: translateY(50%);}
   ul, li { list-style: none;}
-  ul {width: 600px;height: 600px;display: flex;flex-direction: row;flex-wrap: wrap;}
-  li { width: 30px; height: 30px; }
-  /* ul {width: 600px;height: 600px; margin: 0 auto;}
-  li { width: 30px; height: 30px; background-color: #fff; margin: 0; float: left; text-align: center; line-height: 30px; cursor: pointer;} */
+  ul {width: 600px;display: flex;flex-direction: column;flex-wrap: wrap;}
+  li { width: 30px; height: 30px; cursor: pointer;}
+  li:hover {border: solid 1px #000;box-sizing: border-box;}
 </style>
-<ul></ul>
+<div class="box"></div>
 <script src="./color-data.js"></script>
 <script>
 const copy = (target, text) => {
@@ -32,19 +33,39 @@ const copy = (target, text) => {
   target.removeEventListener('copy', copyText);
 };
 
-// const frag = document.createElement('fragment');
 const fragment = document.createDocumentFragment();
-window.$DATA.forEach((text, index) => {
-  const li = document.createElement('li');
-  li.style.background = text;
-  // li.innerHTML = '#' + index + 1;
-  fragment.appendChild(li);
+const arrayChunk = (arr, length = 10) => {
+  let len = parseInt(arr.length / length, 10);
+  const list = [];
+  const arrLength = arr.length;
+  for (let i = 0; i <= arrLength; i += length) {
+    const part = arr.splice(0, length);
+    part.length && list.push(part);
+  }
+
+  return list;
+}
+const $box = document.querySelector('.box');
+arrayChunk(window.$DATA).forEach(arr => {
+  const ul = document.createElement('ul');
+  arr.forEach(item => {
+    const li = document.createElement('li');
+    li.style.background = item;
+    ul.appendChild(li);
+  });
+  $box.appendChild(ul);
 });
-document.querySelector('ul').appendChild(fragment);
-document.querySelector('ul').addEventListener('click', e => {
+// window.$DATA.forEach((text, index) => {
+//   const li = document.createElement('li');
+//   li.style.background = text;
+//   fragment.appendChild(li);
+// });
+
+// document.querySelector('ul').appendChild(fragment);
+$box.addEventListener('click', e => {
   if (e.target.tagName.toLowerCase() === 'li') {
     const { target } = e;
-    copy(target, target.style.cssText);
+    copy(target, target.style.background);
   }
 })
 </script>

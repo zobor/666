@@ -27,6 +27,7 @@ export const Deals = ({data = {}}) => {
   const [list, setList] = useState([]);
   const [latestHour, setLatestHour] = useState(0);
   const {code, current} = data;
+  const { now } = current || {};
   const dom = useRef(null);
   const timer = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +84,7 @@ export const Deals = ({data = {}}) => {
                 [cls[item.BS]]: true,
                 latest: getHourFromTimeString(item.time) === latestHour,
                 big: isBig(item.deal),
-                [current < item.price ? 'gt' : 'lt']: true,
+                [+now < +item.price ? 'lt' : 'gt']: true,
               })}>
                 {item.time} {item.price} {item.shou}手 {item.deal}
               </li>
@@ -96,7 +97,7 @@ export const Deals = ({data = {}}) => {
                 [cls[item.BS]]: true,
                 latest: getHourFromTimeString(item.time) === latestHour,
                 big: isBig(item.deal),
-                [current < item.price ? 'gt' : 'lt']: true,
+                [+now < +item.price ? 'lt' : 'gt']: true,
               })}>
                 {item.time} {item.price} {item.shou}手 {item.deal}
               </li>

@@ -38,7 +38,7 @@ body {
   color: #4d63bc;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   position: absolute;
   align-items: center;
   top: 0;

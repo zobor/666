@@ -23,6 +23,12 @@ import {
 
 const { useEffect, useState, Fragment, useCallback,useRef } = React;
 
+const Now = (props) => {
+  const { current } = props;
+  const { now } = current || {};
+  return <div style={{fontSize: 25}}>{now}</div>
+}
+
 export const App = ({ context }) => {
   const useDataPage =
     context.code && context.buy && context.sum && context.interval;
@@ -122,6 +128,7 @@ export const App = ({ context }) => {
       {!useDataPage ? <STForm /> : null}
       {useDataPage ? (
         <Fragment>
+          <Now current={current} />
           <CoundDown data={countDownData} />
           <Current data={current} toggleShowCurrent={toggleShowCurrent} />
           <Deals data={{ code: context.code, current }} />

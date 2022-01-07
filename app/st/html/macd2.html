@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEMO</title>
+<style>
+#app {
+  position: absolute;
+  background: #efefef;
+  top: 0;
+  left: 0;
+  width: 96vw;
+  height: 96vh;
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../lib/echarts.min.js"></script>
+<script type="module">
+import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex, gethk2china } from '../src/utils.js';
+
+const myChart = echarts.init(document.getElementById('app'));
+
+const update = async() => {
+  const code = getUrlParam('c') || 'sz000333';
+  const rs = await getMinutesKline(code);
+  const prices = {};
+  rs.list.forEach(item => {
+    prices[item.time] = item.close;
+  });
+  const priceList = rs.list.map(item => item.close);
+  const closeList = rs.list.map(item=>item.close).reverse();
+  const datas = getMACD(closeList);
+  const { macd, dif, dea } = datas;
+
+  let dataList = [];
+  window.aa = dataList;
+  const fixedLength = 4;
+
+  macd.map((item, idx) => {
+    if (rs.list[idx].time === '09:30') {
+      return;
+    }
+
+    const time = rs.list[idx].time;
+    const close = prices[time];
+    dataList.push({
+      macd: Number(item.toFixed(fixedLength)),
+      dif: Number(dif[idx].toFixed(fixedLength)),
+      dea: Number(dea[idx].toFixed(fixedLength)),
+      time,
+      close,
+    });
+  });
+
+  const xData = [];
+  const yData = [];
+  const yData2 = [];
+  const yData3 = [];
+  const yData4 = [];
+  const zoom = 100 * 1.2;
+  dataList.reverse().forEach(item => {
+    xData.push(item.time);
+    yData.push(item.macd * zoom);
+    yData2.push(item.dif * zoom);
+    yData3.push(item.dea * zoom);
+    yData4.push(item.close);
+  });
+  window.aa = dataList;
+  document.title = dataList[dataList.length-1].macd;
+
+  const options = getOptions({xData, yData, yData2, yData3, yData4});
+  myChart.setOption(options);
+}
+
+const colors = [
+  'rgb(192, 57, 43)',
+  'rgb(130, 224, 170)',
+  'rgb(213, 219, 219)',
+  'rgb(153, 163, 164)',
+  'rgb(242, 244, 244)'
+]
+
+function getOptions(params = {}) {
+  const { xData, yData,yData2, yData3, yData4 } = params;
+  const option = {
+    title: {},
+    xAxis: {
+      data: xData,
+    },
+    yAxis: {},
+    series: [
+      {
+        name: 'A',
+        type: 'line',
+        data: yData,
+        showSymbol: false,
+        itemStyle: {
+          normal: {
+            color: colors[0],
+            borderColor: colors[0],
+            borderWidth: 2,
+          },
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: colors[3],
+            },
+            {
+              offset: 1,
+              color: colors[4],
+            },
+          ]),
+        },
+      },
+      {
+        name: 'B',
+        type: 'line',
+        data: yData2,
+        showSymbol: false,
+        itemStyle: {
+          normal: {
+            color: colors[1],
+            borderColor: colors[1],
+            borderWidth: 2,
+          },
+        },
+      },
+      {
+        name: 'C',
+        type: 'line',
+        data: yData3,
+        showSymbol: false,
+        itemStyle: {
+          normal: {
+            color: colors[2],
+            borderColor: colors[2],
+            borderWidth: 2,
+          },
+        },
+      },
+    ]
+  };
+
+  return option;
+}
+
+(async() => {
+	await update();
+	setInterval(async() => {
+		await update();
+	}, 1400);
+})();
+</script>
+</body>
+</html>

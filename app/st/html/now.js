@@ -12,7 +12,6 @@ const cache = {
 };
 window.STcache = cache;
 window.STnotify = {};
-console.log('code', code);
 
 const buildTable = (list, smallest, biggest, superDeals) => {
 	const nums = list.map(item => item.close);
@@ -264,9 +263,6 @@ const history = async() => {
 };
 
 const toggleVisibility = () => {
-  if (window.innerWidth < 800) {
-    return;
-  }
   document.body.classList.add('hide');
   document.body.addEventListener('keydown', e => {
     if (e.keyCode === 83) {
@@ -277,7 +273,6 @@ const toggleVisibility = () => {
     document.body.classList.add('hide');
   });
   document.body.addEventListener('click', e=> {
-    console.log(document.body.classList);
     document.body.classList.toggle('hide');
   });
 }
@@ -321,7 +316,7 @@ const timeCountDown = () => {
 const main = async() => {
   const run = async() => {
     await update();
-    await history();
+    // await history();
   };
 
   toggleVisibility();

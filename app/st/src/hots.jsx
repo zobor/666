@@ -4,7 +4,6 @@ import { favStockNameList } from './config';
 const { useEffect, useState, useRef } = React;
 
 export const Hots = ({data = {}}) => {
-  const {code} = data;
   const dom = useRef(null);
   const [list, setList] = useState([]);
   const [list2, setList2] = useState([]);

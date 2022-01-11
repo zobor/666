@@ -11,17 +11,36 @@
   top: 0;
   left: 0;
   width: 96vw;
-  height: 96vh;
+  height: 90vh;
+}
+#tb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+}
+#tb table {
+  float: right;
+  font-size: 12px;
+}
+#tb td.max {
+  color: red;
+}
+#tb td.min {
+  color: green;
 }
 </style>
 </head>
 <body>
 <div id="app"></div>
+<div id="tb"></div>
 <script src="../lib/echarts.min.js"></script>
 <script type="module">
 import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex, gethk2china } from '../src/utils.js';
 
 const myChart = echarts.init(document.getElementById('app'));
+const myTable = document.querySelector('#tb');
 
 const update = async() => {
   const code = getUrlParam('c') || 'sz000333';
@@ -73,20 +92,45 @@ const update = async() => {
 
   const options = getOptions({xData, yData, yData2, yData3, yData4});
   myChart.setOption(options);
+  buildTable(dataList);
 }
 
+const buildTable = (list) => {
+  const table = ['<table>'];
+  const arr = list.slice(list.length - 15, list.length);
+  const values = arr.map(item => item.close);
+  const max = Math.max.apply(Math, values);
+  const min = Math.min.apply(Math, values);
+  arr.map(item => {
+    table.push('<tr>');
+    table.push(`<td class="${item.close === max ? 'max' : item.close === min ? 'min' : ''}">${item.time} - ${item.close}</td>`);
+    table.push('</tr>');
+  });
+  table.push('</table>');
+  myTable.innerHTML = table.join('');
+};
+
 const colors = [
-  'rgb(192, 57, 43)',
-  'rgb(130, 224, 170)',
-  'rgb(213, 219, 219)',
-  'rgb(153, 163, 164)',
-  'rgb(242, 244, 244)'
+  'rgb(245, 183, 177)',
+  'rgb(118, 215, 196)',
+  'rgb(171, 178, 185)',
+  'rgb(246, 221, 204)',
+  '#efefef'
 ]
 
 function getOptions(params = {}) {
   const { xData, yData,yData2, yData3, yData4 } = params;
   const option = {
     title: {},
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function(data) {
+        return data[0].axisValue;
+      }
+    },
     xAxis: {
       data: xData,
     },

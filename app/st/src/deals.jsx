@@ -97,7 +97,7 @@ export const Deals = ({data = {}}) => {
                 [cls[item.BS]]: true,
                 latest: getHourFromTimeString(item.time) === latestHour,
                 big: isBig(item.deal),
-                [+now < +item.price ? 'lt' : 'gt']: true,
+                // [+now < +item.price ? 'lt' : 'gt']: true,
               })}>
                 {item.time} {item.price} {item.shou}手 {item.deal}
               </li>

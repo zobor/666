@@ -124,7 +124,6 @@ const current = data[0];
 
 const myChart = echarts.init(document.getElementById('app'));
 const listData = data.slice(0, Number(pageSize) || 120).reverse();
-console.log(listData[0]);
 let xData = listData.map(item => item.day);
 let yData = listData.map(item => item.close);
 
@@ -147,8 +146,6 @@ if ((buyTime && buyValue) || (sellTime && sellValue)) {
       yAxis: sellValue,
     };
   }
-
-  // debugger
 
   startIndex = xData.findIndex((item) => item === buyTime);
   endIndex = sellTime ? xData.findIndex((item) => item === sellTime) : (xData.length - 1);
@@ -256,8 +253,6 @@ if (showMin) {
 setTimeout(() => {
   myChart.setOption(option);
 },500);
-
-console.log('chart option', option);
 
 };
 </script>

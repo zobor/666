@@ -702,25 +702,36 @@ export const loadBigDeal = async (code, amount = 500) => {
 };
 
 export const getClose = async(code) => {
-  const json = await (
+  const c = code.replace(/\D+g/, '');
+  const data = await (
     await fetch(
-      `https://www.laohu8.com/proxy/stock/astock/stock_info/candle_stick/day/${code.replace(
-        /\D+/g,
-        ''
-      )}`
+      // `https://www.laohu8.com/proxy/stock/astock/stock_info/candle_stick/day/${code.replace(
+      //   /\D+/g,
+      //   ''
+      // )}`
+      `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=0.${c}&klt=101&fqt=1&lmt=66&end=20500000&iscca=1&fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6%2Cf7%2Cf8&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf62%2Cf63%2Cf64&ut=f057cbcbce2a86e2866ab8877db1d059&forcect=1`
     )
   ).json();
-  const { items } = json;
+  const list = data.data.klines.map((item) => {
+      const arr = item.split(',');
+      return {
+          time: arr[0],
+          open: +arr[1],
+          close: +arr[2],
+          max: +arr[3],
+          min: +arr[4],
+      };
+  });
 
-  return items.reverse();
+  return list;
 };
 
 // 历史行情
-cache.getHistory = cache.getHistory || {};
+// cache.getHistory = cache.getHistory || {};
 export const getHistory = async (code) => {
-  if (!isInDealTime() && !isEmpty(cache.getHistory[code])) {
-    return cache.getHistory[code];
-  }
+  // if (!isInDealTime() && !isEmpty(cache.getHistory[code])) {
+  //     return cache.getHistory[code];
+  // }
 
   const items = await getClose(code);
 

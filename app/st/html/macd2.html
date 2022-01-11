@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DEMO</title>
 <style>
+* {margin: 0;padding:0;}
 #app {
   position: absolute;
   background: #efefef;
@@ -16,18 +17,17 @@
 #tb {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 90vh;
+  right: 0;
 }
-#tb table {
+#tb ul {
   float: right;
   font-size: 12px;
+  list-style: none;
 }
-#tb td.max {
+#tb li.max {
   color: red;
 }
-#tb td.min {
+#tb li.min {
   color: green;
 }
 </style>
@@ -96,17 +96,15 @@ const update = async() => {
 }
 
 const buildTable = (list) => {
-  const table = ['<table>'];
-  const arr = list.slice(list.length - 15, list.length);
+  const table = ['<ul>'];
+  const arr = list.slice(list.length - 20, list.length);
   const values = arr.map(item => item.close);
   const max = Math.max.apply(Math, values);
   const min = Math.min.apply(Math, values);
   arr.map(item => {
-    table.push('<tr>');
-    table.push(`<td class="${item.close === max ? 'max' : item.close === min ? 'min' : ''}">${item.time} - ${item.close}</td>`);
-    table.push('</tr>');
+    table.push(`<li class="${item.close === max ? 'max' : item.close === min ? 'min' : ''}">${item.time} - ${item.close}</li>`);
   });
-  table.push('</table>');
+  table.push('</ul>');
   myTable.innerHTML = table.join('');
 };
 

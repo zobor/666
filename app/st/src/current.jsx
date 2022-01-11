@@ -52,6 +52,8 @@ const kvMap2 = {
 };
 
 const kvMap3 = {
+  buy: { label: '买入' },
+  buySum: { label: '数量' }
   // sh_moneyFormat: { label: '上海成交' },
   // sz_moneyFormat: { label: '深圳成交' },
   // sh_index: { label: '上证指数' },
@@ -75,10 +77,12 @@ const kvList = [kvMap1,kvMap2,kvMap3,kvMap4];
 const { useState, useEffect, useRef } = React;
 const getNow = () => formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss');
 
-export const Current = ({ data = {}, toggleShowCurrent }) => {
+export const Current = ({ data = {}, toggleShowCurrent, context }) => {
   const [time, setTime] = useState(getNow());
   const dom = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  data.buy = context.buy;
+  data.buySum = context.sum;
   const onDoubleClick = () => {
     setIsOpen(!isOpen);
     toggleShowCurrent(!isOpen);

@@ -55,15 +55,16 @@ if (!code) return;
 
 const data = await getClose(code);
 data.map(item => {
-  item.day = formatDate(item.time);
+  item.day = item.time;
 });
 const current = data[0];
 
 const myChart = echarts.init(document.getElementById('app'));
 const listData = data.slice(0, len ? Number(len) : 10).reverse();
+console.log(listData);
 let xData = listData.map(item => item.day);
-let yData = listData.map(item => item.low);
-let yData2 = listData.map(item => item.high);
+let yData = listData.map(item => item.min);
+let yData2 = listData.map(item => item.max);
 
 const option = {
   title: {

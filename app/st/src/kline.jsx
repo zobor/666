@@ -68,6 +68,11 @@ export const Kline = ({data = {}}) => {
             振幅图
           </a>
         </p>
+        <p>
+          <a href={`./macd2.html?c=${code}`} target="_blank;">
+            MACD
+          </a>
+        </p>
       </div>
     </div>
   );

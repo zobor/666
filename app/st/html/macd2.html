@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DEMO</title>
 <style>
-* {margin: 0;padding:0;}
+* {margin: 0;padding:0; color: #000;}
 #app {
   position: absolute;
   background: #efefef;
@@ -31,27 +31,51 @@
 #tb li.min {
   color: green;
 }
+#filter-list {
+  position: absolute;
+  top: 10px;
+  left: 2px;
+  z-index: 100;
+}
+#filter-list li {
+  padding: 3px 10px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+#filter-list li.active {
+  background: red;
+}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <div id="tb"></div>
+<ul id="filter-list">
+  <li>1</li>
+  <li>2</li>
+  <li>3</li>
+  <li>5</li>
+</ul>
 <script src="../lib/echarts.min.js"></script>
 <script type="module">
 import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex, gethk2china } from '../src/utils.js';
 
 const myChart = echarts.init(document.getElementById('app'));
 const myTable = document.querySelector('#tb');
+const $filter = document.querySelector('#filter-list');
+let filter = '';
 
 const update = async() => {
   const code = getUrlParam('c') || 'sz000333';
   const rs = await getMinutesKline(code);
   const prices = {};
-  rs.list.forEach(item => {
+  const { list } = rs;
+  list.forEach(item => {
     prices[item.time] = item.close;
   });
-  const priceList = rs.list.map(item => item.close);
-  const closeList = rs.list.map(item=>item.close).reverse();
+  const priceList = list.map(item => item.close);
+  const closeList = priceList.reverse();
   const datas = getMACD(closeList);
   const { macd, dif, dea } = datas;
 
@@ -60,11 +84,11 @@ const update = async() => {
   const fixedLength = 4;
 
   macd.map((item, idx) => {
-    if (rs.list[idx].time === '09:30') {
+    if (list[idx].time === '09:30') {
       return;
     }
 
-    const time = rs.list[idx].time;
+    const time = list[idx].time;
     const close = prices[time];
     dataList.push({
       macd: Number(item.toFixed(fixedLength)),
@@ -81,7 +105,14 @@ const update = async() => {
   const yData3 = [];
   const yData4 = [];
   const zoom = 100 * 1.2;
-  dataList.reverse().forEach(item => {
+  dataList.filter(item => {
+    if (!filter) {
+      return true;
+    }
+    const { time } = item;
+    const min = +time.replace(/\d+:/, '');
+    return min % Number(filter) === 0;
+  }).reverse().forEach(item => {
     xData.push(item.time);
     yData.push(item.macd * zoom);
     yData2.push(item.dif * zoom);
@@ -98,7 +129,7 @@ const update = async() => {
 
 const buildTable = (list) => {
   const table = ['<ul>'];
-  const arr = list.slice(list.length - 20, list.length).reverse();
+  const arr = list.reverse().slice(list.length - 26, list.length).reverse();
   const values = arr.map(item => item.close);
   const max = Math.max.apply(Math, values);
   const min = Math.min.apply(Math, values);
@@ -191,6 +222,19 @@ function getOptions(params = {}) {
 
   return option;
 }
+
+$filter.addEventListener('click', e => {
+  const { target } = e;
+  if (target.tagName.toLowerCase() === 'li') {
+    const txt = target.innerText;
+    filter = txt.trim();
+    update();
+    Array.from(target.parentNode.children).forEach(item => {
+      item.className = '';
+    });
+    target.classList.add('active');
+  }
+});
 
 (async() => {
 	await update();

@@ -130,7 +130,7 @@ export const App = ({ context }) => {
         <Fragment>
           <Now current={current} />
           <CoundDown data={countDownData} />
-          <Current data={current} toggleShowCurrent={toggleShowCurrent} />
+          <Current context={context} data={current} toggleShowCurrent={toggleShowCurrent} />
           <Deals data={{ code: context.code, current }} />
           <Hots data={{ code: context.code }} />
           <Fav />

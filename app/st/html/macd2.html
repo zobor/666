@@ -16,13 +16,14 @@
 }
 #tb {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
 }
 #tb ul {
   float: right;
-  font-size: 12px;
+  font-size: 13px;
   list-style: none;
+  line-height: 1;
 }
 #tb li.max {
   color: red;
@@ -88,7 +89,7 @@ const update = async() => {
     yData4.push(item.close);
   });
   window.aa = dataList;
-  document.title = dataList[dataList.length-1].macd;
+  document.title = dataList[dataList.length-1].macd.toFixed(3) + '-' + dataList[dataList.length-1].close;
 
   const options = getOptions({xData, yData, yData2, yData3, yData4});
   myChart.setOption(options);
@@ -97,7 +98,7 @@ const update = async() => {
 
 const buildTable = (list) => {
   const table = ['<ul>'];
-  const arr = list.slice(list.length - 20, list.length);
+  const arr = list.slice(list.length - 20, list.length).reverse();
   const values = arr.map(item => item.close);
   const max = Math.max.apply(Math, values);
   const min = Math.min.apply(Math, values);
@@ -195,7 +196,7 @@ function getOptions(params = {}) {
 	await update();
 	setInterval(async() => {
 		await update();
-	}, 1400);
+	}, 2500);
 })();
 </script>
 </body>

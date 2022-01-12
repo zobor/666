@@ -1,0 +1,16 @@
+{
+  "2022-01-12": [
+    { "yAxis": 74.01, "value": "B", "xAxis": "09:35" },
+    { "yAxis": 74.19, "value": "S", "xAxis": "10:23" },
+    { "yAxis": 74.78, "value": "S", "xAxis": "14:08" },
+    { "yAxis": 74.21, "value": "B", "xAxis": "14:33" }
+  ],
+  "2022-01-11": [
+    { "yAxis": 77.01, "value": "B", "xAxis": "09:35" },
+    { "yAxis": 77.6, "value": "S", "xAxis": "09:44" },
+    { "yAxis": 76.9, "value": "B", "xAxis": "09:55" },
+    { "yAxis": 77.3, "value": "S", "xAxis": "10:01" },
+    { "yAxis": 78.52, "value": "S", "xAxis": "10:27" },
+    { "yAxis": 77.83, "value": "B", "xAxis": "10:52" }
+  ]
+}

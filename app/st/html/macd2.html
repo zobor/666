@@ -70,7 +70,8 @@ const update = async() => {
   const code = getUrlParam('c') || 'sz000333';
   const rs = await getMinutesKline(code);
   const prices = {};
-  const { list } = rs;
+  let { list } = rs;
+  list = list.slice(0, 30);
   list.forEach(item => {
     prices[item.time] = item.close;
   });
@@ -120,7 +121,7 @@ const update = async() => {
     yData4.push(item.close);
   });
   window.aa = dataList;
-  document.title = dataList[dataList.length-1].macd.toFixed(3) + '-' + dataList[dataList.length-1].close;
+  document.title = dataList[0].macd.toFixed(3) + '-' + dataList[0].close;
 
   const options = getOptions({xData, yData, yData2, yData3, yData4});
   myChart.setOption(options);
@@ -136,6 +137,7 @@ const buildTable = (list) => {
   arr.map(item => {
     table.push(`<li class="${item.close === max ? 'max' : item.close === min ? 'min' : ''}">${item.time} - ${item.close}</li>`);
   });
+  table.push(`<li>${float2Fix((max - min) / min)}</li>`);
   table.push('</ul>');
   myTable.innerHTML = table.join('');
 };

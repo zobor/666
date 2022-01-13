@@ -71,7 +71,7 @@ const update = async() => {
   const rs = await getMinutesKline(code);
   const prices = {};
   let { list } = rs;
-  list = list.slice(0, 30);
+  // list = list.slice(0, 30);
   list.forEach(item => {
     prices[item.time] = item.close;
   });

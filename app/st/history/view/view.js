@@ -47,7 +47,7 @@ const render = async () => {
 };
 
 const loadConfig = async() => {
-    const data = await (await fetch('./view.json')).json();
+    const data = await (await fetch(`./view.json?t=${Date.now()}`)).json();
     document.querySelector('#app').innerHTML = '<div class="list">' + Object.keys(data).map(day => {
         return `<h2>${day}</h2>`;
     }).join('') + '</div>';

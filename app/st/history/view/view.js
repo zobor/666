@@ -2,7 +2,7 @@ let today;
 let trades = [];
 let myChart;
 const render = async () => {
-  const data = await (await fetch(`./list/${today}_sz000333`)).json();
+  const data = await (await fetch(`../list/${today}_sz000333`)).json();
   let xData = data.map((item) => item.time.replace(/\d{4}-\d{2}-\d{2}\s/, ''));
   let yData = data.map((item) => item.close);
 
@@ -18,7 +18,7 @@ const render = async () => {
       },
       formatter: function (datas) {
           const [data] = datas;
-        return data.data;
+        return `${data.axisValue} - ${data.data}`
       },
     },
     xAxis: {

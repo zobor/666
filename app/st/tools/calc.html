@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calc</title>
+</head>
+<body>
+
+<style>
+.app {max-width: 400px; margin: 0 auto;}
+.app>p {display: flex; align-items: center;}
+.app>p label {width: 50px;color: rgb(183, 149, 11);}
+.app>p input {height: 30px;line-height: 30px;border: solid 2px rgb(133, 193, 233);border-radius: 5px;color: rgb(88, 214, 141);}
+.app>p input:focus{border-color: rgb(231, 76, 60);}
+</style>
+<div class="app">
+  <p>
+    <label for="B">B</label>
+    <input autofocus type="text" id="B" />
+  </p>
+  <p>
+    <label for="S">S</label>
+    <input type="text" id="S" />
+  </p>
+  <p>
+    <label for="N">N</label>
+    <input type="text" id="N" />
+  </p>
+  <ul>
+    <li>Profit: <span id="rs_p"></span></li>
+    <li>Rage: <span id="rs_rt"></span></li>
+    <li>Fee: <span id="rs_f"></span></li>
+    <li>B1: <span id="rs_b1"></span></li>
+    <li>B2: <span id="rs_b2"></span></li>
+  </ul>
+</div>
+<script>
+let data = {};
+const per = 53 / 42500;
+const key = '20220114-calc';
+B.addEventListener('keyup', (e) => {
+  data.B = +e.target.value.trim();
+  calc();
+});
+S.addEventListener('keyup', (e) => {
+  data.S = +e.target.value.trim();
+  calc();
+});
+N.addEventListener('keyup', (e) => {
+  data.N = +e.target.value.trim();
+  calc();
+});
+function calc() {
+  localStorage.setItem(key, JSON.stringify(data));
+  if (data.B && data.S && data.N) {
+    const b1 = parseInt(data.B * data.N);
+    const b2 = parseInt(data.S * data.N);
+    const p1 = b2 - b1;
+    const fee = parseInt(b1 * per);
+    const p2 = p1 - fee;
+    rs_rt.innerHTML = ((data.S - data.B) / data.B * 100).toFixed(2) + '%';
+    rs_p.innerHTML = p2;
+    rs_f.innerHTML = fee;
+    rs_b1.innerHTML = b1;
+    rs_b2.innerHTML = b2;
+  }
+}
+
+window.onload = () => {
+  const str = localStorage.getItem(key);
+  try {
+    const d = JSON.parse(str);
+    if (d) {
+      data = d;
+      Object.keys(data).map(key => {
+        window[key].value = data[key];
+      });
+    }
+    calc();
+  }catch(err){}
+};
+</script>
+</body>
+</html>

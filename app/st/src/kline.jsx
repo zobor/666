@@ -73,6 +73,11 @@ export const Kline = ({data = {}}) => {
             MACD
           </a>
         </p>
+        <p>
+          <a href={`../tools/calc.html`} target="_blank;">
+            计算器
+          </a>
+        </p>
       </div>
     </div>
   );

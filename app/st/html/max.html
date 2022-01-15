@@ -60,7 +60,7 @@ data.map(item => {
 const current = data[0];
 
 const myChart = echarts.init(document.getElementById('app'));
-const listData = data.slice(0, len ? Number(len) : 10).reverse();
+const listData = data.reverse().slice(0, len ? Number(len) : 22).reverse();
 console.log(listData);
 let xData = listData.map(item => item.day);
 let yData = listData.map(item => item.min);

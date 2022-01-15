@@ -32,7 +32,7 @@ export const STForm = () => {
 
   useEffect(() => {
     $code.current.value = Object.keys(favMap)[0];
-    $total.current.value = 2000;
+    $total.current.value = 800;
     $interval.current.value = 2000;
   }, [])
 
@@ -54,6 +54,16 @@ export const STForm = () => {
       <p>
         <label>Total:</label>
         <input type="text" name="s" ref={$total} />
+        <select onChange={(e) => {
+          $total.current.value = +e.target.value;
+        }}>
+          <option value="2000">2000</option>
+          <option value="1000">1000</option>
+          <option value="900">900</option>
+          <option value="800">800</option>
+          <option value="700">700</option>
+          <option value="600">600</option>
+        </select>
       </p>
       <p>
         <label>Interval:</label>

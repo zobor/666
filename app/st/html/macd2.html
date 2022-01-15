@@ -72,7 +72,11 @@ const update = async() => {
   const prices = {};
   let { list } = rs;
   // list = list.slice(0, 30);
-  list.forEach(item => {
+  list.filter(item => {
+    // const time = +item.time.replace(/\d{2}:/);
+    // return time %2 === 0;
+    return true;
+  }).forEach(item => {
     prices[item.time] = item.close;
   });
   const priceList = list.map(item => item.close);

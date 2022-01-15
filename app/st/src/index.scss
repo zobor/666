@@ -91,6 +91,9 @@ body {
 .st-form {
 	display: flex;
 	flex-direction: column;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 
 	p {
 		display: flex;
@@ -104,6 +107,11 @@ body {
 
 		select {
 			height: 39px;
+			border: solid 1px rgb(44, 62, 80);
+		}
+
+		input {
+			border: solid 1px rgb(44, 62, 80);
 		}
 	}
 

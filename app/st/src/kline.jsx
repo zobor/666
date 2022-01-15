@@ -78,6 +78,11 @@ export const Kline = ({data = {}}) => {
             计算器
           </a>
         </p>
+        <p>
+          <a href={`../history/view/view.html`} target="_blank;">
+            交易
+          </a>
+        </p>
       </div>
     </div>
   );

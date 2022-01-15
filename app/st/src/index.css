@@ -71,7 +71,10 @@ body {
 
 .st-form {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); }
   .st-form p {
     display: flex;
     margin-top: 10px;
@@ -80,7 +83,10 @@ body {
       display: inline-flex;
       width: 80px; }
     .st-form p select {
-      height: 39px; }
+      height: 39px;
+      border: solid 1px #2c3e50; }
+    .st-form p input {
+      border: solid 1px #2c3e50; }
   .st-form .button {
     flex: 1;
     background: green;

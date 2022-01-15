@@ -140,7 +140,6 @@ export const Fav = ({data = {}}) => {
             <th>名称</th>
             <th>总流向</th>
             <th>1000+</th>
-            <th>500+</th>
             <th>买入</th>
             <th>卖出</th>
           </tr>
@@ -151,7 +150,6 @@ export const Fav = ({data = {}}) => {
               <td>{item.name}</td>
               <td>{moneyFormat(item.pure)}</td>
               <td>{moneyFormat(item.pure_1000)}</td>
-              <td>{moneyFormat(item.pure_500)}</td>
               <td>{moneyFormat(item.buy)}</td>
               <td>{moneyFormat(item.sell)}</td>
             </tr>

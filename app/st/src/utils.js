@@ -163,7 +163,6 @@ export const trigger = (obj, type) => {
       evt.synthetic = true;
       obj.dispatchEvent(evt, true);
     } catch (e) {
-      // console.log(e);
     }
   }
 };
@@ -178,7 +177,6 @@ export const classnames = (cls) => {
 
 // macd start
 const calcEMA = function (n, data, field) {
-  // console.log(n, data);
   var i, l, ema, a;
   a = 2 / (n + 1);
   if (field) {
@@ -194,7 +192,6 @@ const calcEMA = function (n, data, field) {
       ema.push(a * data[i] + (1 - a) * ema[i - 1]);
     }
   }
-  // console.log(ema);
   return ema;
 };
 
@@ -413,9 +410,6 @@ export const getStockZhuliHistory = async (code) => {
   const data = rs.data.klines
     .map((item) => {
       const arr = item.split(',');
-      // if (arr[0] === '2021-02-22') {
-      //   console.log(arr);
-      // }
       return {
         time: arr[0],
         inMoney: Number(arr[1]),
@@ -424,11 +418,6 @@ export const getStockZhuliHistory = async (code) => {
       };
     })
     .reverse();
-
-  // data.map((item, idx) => {
-  //   item.inTotalMoney = data.slice(0, idx).reduce((aac, cur) => cur.inMoney + aac, 0) + item.inMoney;
-  //   console.log(item.inTotalMoney, item.inMoney)
-  // });
 
   return data;
 };
@@ -719,11 +708,11 @@ export const getClose = async(code) => {
       };
   });
 
-  return list;
+  return list.reverse();
 };
 
 // 历史行情
-// cache.getHistory = cache.getHistory || {};
+cache.getHistory = cache.getHistory || {};
 export const getHistory = async (code) => {
   // if (!isInDealTime() && !isEmpty(cache.getHistory[code])) {
   //     return cache.getHistory[code];

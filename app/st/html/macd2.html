@@ -5,94 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DEMO</title>
 <style>
-* {margin: 0;padding:0; color: #000;}
-#app {
-  position: absolute;
-  background: #efefef;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  bottom: 170px;
-}
-#tb {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-}
-#tb ul {
-  font-size: 13px;
-  list-style: none;
-  line-height: 1;
-  display: flex;
-  flex-wrap: wrap;
-}
-#tb ul li {width: 25%; color: #aaa;}
-#tb ul li:first-child{color: #000;}
-#tb li.max {
-  color: red;
-}
-#tb li.min {
-  color: green;
-}
-#filter-list {
-  position: absolute;
-  top: 10px;
-  left: 2px;
-  z-index: 100;
-}
-#filter-list li {
-  padding: 3px 10px;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-}
-#filter-list li.active {
-  background: red;
-}
-#time-limit {
-  position: absolute;
-  bottom: 110px;
-  left: 0;
-  display: flex;
-  list-style: none;
-  width: 100%;
-}
-#time-limit li {
-  flex: 1;
-  cursor: pointer;
-  text-align: center;
-  background-color: #efefef;
-  margin: 10px;
-  padding: 5px;
-  border-radius: 5px;
-}
-#time-limit li.active {
-  background-color: #000;
-  color: #fff;
-}
+*{margin:0;padding:0;color:#000}
+#app{position:absolute;background:#efefef;top:0;left:0;width:100vw;bottom:320px;}
+#tb{position:absolute;bottom:10px;left:10px}
+#tb ul{font-size:13px;list-style:none;line-height:1;display:flex;flex-wrap:wrap}
+#tb ul li{width:25%;color:#aaa}
+#tb ul li:first-child{color:#000}
+#tb li.max{color:red}
+#tb li.min{color:green}
+#filter-list{position:absolute;top:10px;left:2px;z-index:100}
+#filter-list li{padding:3px 10px;background:#000;color:#fff;cursor:pointer}#filter-list li.active{background:red}
+#time-limit{position:absolute;bottom:110px;left:0;display:flex;list-style:none;width:100%}
+#time-limit li{flex:1;cursor:pointer;text-align:center;background-color:#efefef;margin:10px;padding:5px;border-radius:5px}
+#time-limit li.active{background-color:#000;color:#fff}
+#bs{position:absolute;bottom:170px;list-style:none;display:flex;flex-wrap:wrap;justify-content: space-between;}
+#bs li{width:30%;display:inline-flex;justify-content:space-between;margin:0 10px;font-size: 14px;}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<div id="tb"></div>
-<ul id="filter-list">
-  <li>1</li>
-  <li>2</li>
-  <li>3</li>
-  <li>5</li>
-</ul>
-<ul id="time-limit">
-  <li>0</li>
-  <li>30</li>
-  <li>60</li>
-  <li>90</li>
-</ul>
+<div id="app"></div><div id="tb"></div><ul id="filter-list"><li>1</li><li>2</li><li>3</li><li>5</li></ul><ul id="time-limit"><li>0</li><li>30</li><li>60</li><li>90</li></ul><ul id="bs"></ul>
 <script src="../lib/echarts.min.js"></script>
 <script type="module">
-import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex, gethk2china } from '../src/utils.js';
+import { getMinutesKline,getUrlParam, getMACD, float2Fix, getBSCurrent, moneyFormat } from '../src/utils.js';
 
 const myChart = echarts.init(document.getElementById('app'));
 const myTable = document.querySelector('#tb');
+const bs = document.querySelector('#bs');
 const $filter = document.querySelector('#filter-list');
 let filter = '';
 let limit = 0;
@@ -100,6 +38,8 @@ let limit = 0;
 const update = async() => {
   const code = getUrlParam('c') || 'sz000333';
   const rs = await getMinutesKline(code);
+  const bs = await getBSCurrent(code);
+  
   const prices = {};
   let { list } = rs;
   if (limit) {
@@ -163,6 +103,7 @@ const update = async() => {
   const options = getOptions({xData, yData, yData2, yData3, yData4});
   myChart.setOption(options);
   buildTable(dataList);
+  buildBS(bs);
 }
 
 const buildTable = (list) => {
@@ -179,6 +120,23 @@ const buildTable = (list) => {
   myTable.innerHTML = table.join('');
 };
 
+const buildBS = (obj) => {
+  Object.keys(obj).forEach(key => {
+    if (/\d+$/.test(key)) {
+      obj[key] = (+obj[key] / 100).toFixed(2);
+      obj[`${key}x`] = moneyFormat(Math.round(Number(obj[`${key}n`]) * Number(obj[key]) * 100));
+    }
+  })
+  const html = `
+    <li>B</li><li>S</li>
+    <li>${obj.b1}<span>${obj.b1x}</span></li><li>${obj.s1}<span>${obj.s1x}</span></li>
+    <li>${obj.b2}<span>${obj.b2x}</span></li><li>${obj.s2}<span>${obj.s2x}</span></li>
+    <li>${obj.b3}<span>${obj.b3x}</span></li><li>${obj.s3}<span>${obj.s3x}</span></li>
+    <li>${obj.b4}<span>${obj.b4x}</span></li><li>${obj.s4}<span>${obj.s4x}</span></li>
+    <li>${obj.b5}<span>${obj.b5x}</span></li><li>${obj.s5}<span>${obj.s5x}</span></li>
+  `;
+  bs.innerHTML = html;
+};
 const colors = [
   'rgb(166, 172, 175)',
   'rgb(118, 215, 196)',

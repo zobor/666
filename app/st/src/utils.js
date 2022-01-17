@@ -454,6 +454,40 @@ export const getZhuliRealIn = async(code) => {
   };
 };
 
+export const getBSCurrent = async(code) => {
+  const cb = `jQuery${rand(100000, 90000)}_${Date.now()}`;
+  const c = code.replace(/\D+/, '');
+  const type = code.indexOf('sz') > -1 ? '0' : '1';
+  const url = `https://push2.eastmoney.com/api/qt/stock/get?secid=${type}.${c}&ut=f057cbcbce2a86e2866ab8877db1d059&forcect=1&fields=f13,f19,f20,f23,f24,f25,f26,f27,f28,f29,f30,f43,f44,f45,f46,f47,f48,f49,f50,f57,f58,f59,f60,f85,f107,f111,f113,f114,f115,f116,f117,f127,f130,f131,f132,f133,f135,f136,f137,f138,f139,f140,f141,f142,f143,f144,f145,f146,f147,f148,f149,f152,f161,f162,f164,f165,f167,f168,f169,f170,f171,f174,f175,f177,f178,f181,f182,f198,f199,f251,f252,f253,f254,f255,f256,f257,f260,f261,f288,f292,f293,f294,f295,f530,f531&invt=2&cb=${cb}&_=${Date.now()}`;
+  const rs = await jsonp(url, cb);
+
+    // https://wap.eastmoney.com/quote/stock/0.000333.html
+  const { data } = rs || {};
+
+  return {
+    s1: data.f31,
+    s1n: data.f32,
+    s2: data.f33,
+    s2n: data.f34,
+    s3: data.f35,
+    s3n: data.f36,
+    s4: data.f37,
+    s4n: data.f38,
+    s5: data.f39,
+    s5n: data.f40,
+    b1: data.f19,
+    b1n: data.f20,
+    b2: data.f17,
+    b2n: data.f18,
+    b3: data.f15,
+    b3n: data.f16,
+    b4: data.f13,
+    b4n: data.f14,
+    b5: data.f11,
+    b5n: data.f12,
+  }
+};
+
 // 涨跌家数
 cache.loadUpDownCount = cache.loadUpDownCount || {};
 export const loadUpDownCount = async () => {

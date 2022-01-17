@@ -71,7 +71,7 @@ export const kvMap4 = {
   // cn2hk: { label: '南向资金', bold: true },
   // hk2sh: { label: '北向入沪' },
   // hk2sz: { label: '北向入深' },
-  // todayProfix: { label: '今日浮盈', rgb: true },
+  todayProfix: { label: '今日浮盈', rgb: true },
   // top_line: { label: '上影' },
   // center_line: { label: '实体' },
   // bottom_line: { label: '下影' },

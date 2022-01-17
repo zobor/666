@@ -1,4 +1,7 @@
 const data = `
+#2022-01-17
+72.1 73.2 2900
+
 #2022-01-14
 72.38 72.75 2900
 
@@ -53,11 +56,60 @@ const parseData = (str) => {
   return list;
 };
 
-const getFee = (total) => {
-  const per = 53 / 42500;
+// const getFee = (total) => {
+//   const per = 53 / 42500;
 
-  return parseInt(per * total);
-}
+//   return parseInt(per * total);
+// }
+
+const getFeeOfSell = (val) => {
+  const yongjin = (v) => {
+    const min = 5;
+    const rate = 52.74 / 210975;
+    const f = v * rate;
+    return Math.max(5, parseInt(f));
+  };
+  const guohu = (v) => {
+    const rate = 2 / 100000;
+    const f = rate * v;
+    return parseInt(f)
+  };
+  const yinghua = (v) => {
+    const rate = 1 / 1000;
+    const f = v * rate;
+    return parseInt(f);
+  };
+
+  return yongjin(val) + guohu(val) + yinghua(val);
+};
+const getFeeOfBuy = (val) => {
+  const yongjin = (v) => {
+    const min = 5;
+    const rate = 52.74 / 210975;
+    const f = v * rate;
+    return Math.max(5, parseInt(f));
+  };
+  const guohu = (v) => {
+    const rate = 2 / 100000;
+    const f = rate * v;
+    return parseInt(f)
+  };
+  const yinghua = (v) => {
+    return 0;
+  };
+  return yongjin(val) + guohu(val) + yinghua(val);
+};
+
+const getFee = (bv, sv) => {
+  const b = getFeeOfBuy(bv);
+  const s = getFeeOfSell(sv || bv);
+
+  return {
+    total: b + s,
+    b,
+    s,
+  };
+};
 
 
 const calc = (list) => {
@@ -71,7 +123,7 @@ const calc = (list) => {
       obj.time = time;
       obj.flo = +float2Fix((data.s - data.b)/data.b, 2).replace(/%/, '');
       obj.s = data.t / 100;
-      obj.fee = getFee(data.b * data.t);
+      obj.fee = getFee(data.b * data.t, data.s * data.t).total;
       obj.p1 = a;
       obj.p2 = a - obj.fee;
       content.unshift(obj);

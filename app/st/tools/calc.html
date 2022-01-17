@@ -32,13 +32,62 @@
     <li>Profit: <span id="rs_p"></span></li>
     <li>Rage: <span id="rs_rt"></span></li>
     <li>Fee: <span id="rs_f"></span></li>
+    <li style="padding-left: 20px;">Fee1: <span id="rs_f1"></span></li>
+    <li style="padding-left: 20px;">Fee2: <span id="rs_f2"></span></li>
     <li>B1: <span id="rs_b1"></span></li>
     <li>B2: <span id="rs_b2"></span></li>
   </ul>
 </div>
 <script>
 let data = {};
-const per = 53 / 42500;
+
+const getFee = (bv, sv) => {
+  const getFeeOfSell = (val) => {
+    const yongjin = (v) => {
+      const min = 5;
+      const rate = 52.74 / 210975;
+      const f = v * rate;
+      return Math.max(5, parseInt(f));
+    };
+    const guohu = (v) => {
+      const rate = 2 / 100000;
+      const f = rate * v;
+      return parseInt(f)
+    };
+    const yinghua = (v) => {
+      const rate = 1 / 1000;
+      const f = v * rate;
+      return parseInt(f);
+    };
+
+    return yongjin(val) + guohu(val) + yinghua(val);
+  };
+  const getFeeOfBuy = (val) => {
+    const yongjin = (v) => {
+      const min = 5;
+      const rate = 52.74 / 210975;
+      const f = v * rate;
+      return Math.max(5, parseInt(f));
+    };
+    const guohu = (v) => {
+      const rate = 2 / 100000;
+      const f = rate * v;
+      return parseInt(f)
+    };
+    const yinghua = (v) => {
+      return 0;
+    };
+    return yongjin(val) + guohu(val) + yinghua(val);
+  };
+  const b = getFeeOfBuy(bv);
+  const s = getFeeOfSell(sv || bv);
+
+  return {
+    total: b + s,
+    b,
+    s,
+  };
+};
 const key = '20220114-calc';
 B.addEventListener('keyup', (e) => {
   data.B = +e.target.value.trim();
@@ -58,11 +107,14 @@ function calc() {
     const b1 = parseInt(data.B * data.N);
     const b2 = parseInt(data.S * data.N);
     const p1 = b2 - b1;
-    const fee = parseInt(b1 * per);
+    const feeData = getFee(data.B * data.N, data.S * data.N);
+    const { b, s, total: fee} = feeData;
     const p2 = p1 - fee;
     rs_rt.innerHTML = ((data.S - data.B) / data.B * 100).toFixed(2) + '%';
     rs_p.innerHTML = p2;
     rs_f.innerHTML = fee;
+    rs_f1.innerHTML = b;
+    rs_f2.innerHTML = s;
     rs_b1.innerHTML = b1;
     rs_b2.innerHTML = b2;
   }

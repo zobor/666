@@ -1,4 +1,4 @@
-
+import { getFee } from './utils';
 const { useEffect, useRef } = React;
 
 export const CoundDown = ({data}) => {
@@ -18,7 +18,9 @@ export const CoundDown = ({data}) => {
 		}
 		const per = 53 / 42500;
 		const cost = data.buy * data.sum;
-		const fee = parseInt(cost * per);
+		// const fee = parseInt(cost * per);
+    const feeData = getFee(data.buy * data.sum, data.now * data.sum);
+    const { total: fee } = feeData;
 		const profit = parseInt((data.now - data.buy) * data.sum) - fee;
 		app.current.update(profit);
 		document.title = profit.toFixed(0) + '[' + data.now + '][' + data.up_down + ']';

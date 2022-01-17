@@ -869,3 +869,50 @@ export const message = ({title = 'notify', body = 'hi'}) => {
     
   }
 }
+export const getFee = (bv, sv) => {
+  const getFeeOfSell = (val) => {
+    const yongjin = (v) => {
+      const min = 5;
+      const rate = 52.74 / 210975;
+      const f = v * rate;
+      return Math.max(5, parseInt(f));
+    };
+    const guohu = (v) => {
+      const rate = 2 / 100000;
+      const f = rate * v;
+      return parseInt(f)
+    };
+    const yinghua = (v) => {
+      const rate = 1 / 1000;
+      const f = v * rate;
+      return parseInt(f);
+    };
+
+    return yongjin(val) + guohu(val) + yinghua(val);
+  };
+  const getFeeOfBuy = (val) => {
+    const yongjin = (v) => {
+      const min = 5;
+      const rate = 52.74 / 210975;
+      const f = v * rate;
+      return Math.max(5, parseInt(f));
+    };
+    const guohu = (v) => {
+      const rate = 2 / 100000;
+      const f = rate * v;
+      return parseInt(f)
+    };
+    const yinghua = (v) => {
+      return 0;
+    };
+    return yongjin(val) + guohu(val) + yinghua(val);
+  };
+  const b = getFeeOfBuy(bv);
+  const s = getFeeOfSell(sv || bv);
+
+  return {
+    total: b + s,
+    b,
+    s,
+  };
+};

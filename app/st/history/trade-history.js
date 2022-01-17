@@ -56,12 +56,6 @@ const parseData = (str) => {
   return list;
 };
 
-// const getFee = (total) => {
-//   const per = 53 / 42500;
-
-//   return parseInt(per * total);
-// }
-
 const getFeeOfSell = (val) => {
   const yongjin = (v) => {
     const min = 5;

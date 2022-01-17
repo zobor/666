@@ -12,19 +12,22 @@
   top: 0;
   left: 0;
   width: 96vw;
-  height: 90vh;
+  height: 70vh;
 }
 #tb {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  bottom: 10px;
+  left: 10px;
 }
 #tb ul {
-  float: right;
   font-size: 13px;
   list-style: none;
   line-height: 1;
+  display: flex;
+  flex-wrap: wrap;
 }
+#tb ul li {width: 25%; color: #aaa;}
+#tb ul li:first-child{color: #000;}
 #tb li.max {
   color: red;
 }
@@ -46,6 +49,27 @@
 #filter-list li.active {
   background: red;
 }
+#time-limit {
+  position: absolute;
+  bottom: 15vh;
+  left: 0;
+  display: flex;
+  list-style: none;
+  width: 100%;
+}
+#time-limit li {
+  flex: 1;
+  cursor: pointer;
+  text-align: center;
+  background-color: #efefef;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+#time-limit li.active {
+  background-color: #000;
+  color: #fff;
+}
 </style>
 </head>
 <body>
@@ -57,6 +81,12 @@
   <li>3</li>
   <li>5</li>
 </ul>
+<ul id="time-limit">
+  <li>0</li>
+  <li>30</li>
+  <li>60</li>
+  <li>90</li>
+</ul>
 <script src="../lib/echarts.min.js"></script>
 <script type="module">
 import { classnames, getUrlParam, getMinutesKline, getMACD, numVsNum, message, float2Fix, getZhuliRealIn, moneyFormat, loadIndex, gethk2china } from '../src/utils.js';
@@ -65,13 +95,16 @@ const myChart = echarts.init(document.getElementById('app'));
 const myTable = document.querySelector('#tb');
 const $filter = document.querySelector('#filter-list');
 let filter = '';
+let limit = 0;
 
 const update = async() => {
   const code = getUrlParam('c') || 'sz000333';
   const rs = await getMinutesKline(code);
   const prices = {};
   let { list } = rs;
-  // list = list.slice(0, 30);
+  if (limit) {
+    list = list.slice(0, limit);
+  }
   list.filter(item => {
     // const time = +item.time.replace(/\d{2}:/);
     // return time %2 === 0;
@@ -242,11 +275,27 @@ $filter.addEventListener('click', e => {
   }
 });
 
+function bindEvent() {
+  document.querySelector('#time-limit').addEventListener('click', e => {
+    const { target } = e;
+    if (target.tagName.toLowerCase() === 'li') {
+      const txt = target.innerText;
+      limit = +txt;
+      update();
+      Array.from(target.parentNode.children).forEach(item => {
+        item.className = '';
+      });
+      target.classList.add('active');
+    }
+  })
+}
+
 (async() => {
 	await update();
 	setInterval(async() => {
 		await update();
 	}, 2500);
+  bindEvent();
 })();
 </script>
 </body>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<div class="app">
+  <ul id="b"></ul>
+  <ul id="s"></ul>
+</div>
+
+<script>
+function moneyFormat(val) {
+  if (!val) {
+    return 0;
+  }
+  const v = Number(val);
+  if (Math.abs(v) < 10000) return parseInt(val / 1000) + 'k';
+  if (v >= 10000 * 10000 * 10000) {
+    return `${parseFloat(v / 1000000000000, 10).toFixed(1)}万亿`;
+  }
+  return v >= 100000000 || v <= -100000000
+    ? `${parseFloat(v / 100000000, 10).toFixed(1)}亿`
+    : `${parseFloat(v / 10000, 10).toFixed(0)}万`;
+};
+function formatPrice(v) {
+  return (Number(v) / 100).toFixed(2);
+}
+function formatTotal(price, num) {
+  const v = price * num;
+  const v2 = moneyFormat(v);;
+  if (v > 100 * 10000) {
+    return `<span style="color:red;">${v2}</span>`;
+  }
+  return v2;
+}
+async function update() {
+  const data = await (await fetch(`./data.json?t=${Date.now()}`)).json();
+  b.innerHTML = Object.keys(data.b).sort((a, b) => b - a).map(key => {
+    return `<li class="${+data.now === +key ? 'current' : ''}">${formatPrice(key)} <span>${formatTotal(key, data.b[key])}</span></li>`;
+  }).join('')
+
+  s.innerHTML = Object.keys(data.s).sort((a, b) => b - a).map(key => {
+    return `<li class="${+data.now === +key ? 'current' : ''}">${formatPrice(key)} <span>${formatTotal(key, data.s[key])}</span></li>`;
+  }).join('');
+  
+}
+
+window.onload = () => {
+  update();
+  setInterval(() => {
+    update();
+  }, 10000);
+};
+</script>
+
+<style>
+.app {display: flex;height: 95vh;font-size: 12px;}
+ul {list-style: none;flex: 1;display: flex;flex-direction: column;}
+ul li {padding: 2px 0;margin: 0 2px; border-right: solid 1px #000;}
+ul li span {display: inline-block; text-align: right;}
+ul li.current {background-color: #000;color: #fff;}
+
+</style>
+</body>
+</html>

@@ -7,18 +7,18 @@
 <style>
 *{margin:0;padding:0;color:#000}
 #app{position:absolute;background:#efefef;top:0;left:0;width:100vw;bottom:320px;}
-#tb{position:absolute;bottom:10px;left:10px}
-#tb ul{font-size:13px;list-style:none;line-height:1;display:flex;flex-wrap:wrap}
-#tb ul li{width:25%;color:#aaa}
-#tb ul li:first-child{color:#000}
-#tb li.max{color:red}
-#tb li.min{color:green}
 #filter-list{position:absolute;top:10px;left:2px;z-index:100}
 #filter-list li{padding:3px 10px;background:#000;color:#fff;cursor:pointer}#filter-list li.active{background:red}
 #time-limit{position:absolute;bottom:110px;left:0;display:flex;list-style:none;width:100%}
 #time-limit li{flex:1;cursor:pointer;text-align:center;background-color:#efefef;margin:10px;padding:5px;border-radius:5px}
 #time-limit li.active{background-color:#000;color:#fff}
-#bs{position:absolute;bottom:170px;list-style:none;display:flex;flex-wrap:wrap;justify-content: space-between;}
+#tb{position:absolute;bottom:170px;left:10px}
+#tb ul{font-size:13px;list-style:none;line-height:1;display:flex;flex-wrap:wrap}
+#tb ul li{width:25%;color:#aaa}
+#tb ul li:first-child{color:#000}
+#tb li.max{color:red}
+#tb li.min{color:green}
+#bs{position:absolute;bottom:5px;list-style:none;display:flex;flex-wrap:wrap;justify-content: space-between;}
 #bs li{width:30%;display:inline-flex;justify-content:space-between;margin:0 10px;font-size: 14px;}
 </style>
 </head>
@@ -98,7 +98,7 @@ const update = async() => {
     yData4.push(item.close);
   });
   window.aa = dataList;
-  document.title = dataList[0].macd.toFixed(3) + '-' + dataList[0].close;
+  document.title = dataList[0].close;
 
   const options = getOptions({xData, yData, yData2, yData3, yData4});
   myChart.setOption(options);

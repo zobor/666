@@ -69,6 +69,11 @@ export const Kline = ({data = {}}) => {
           </a>
         </p>
         <p>
+          <a href={`./zhuli.html`} target="_blank;">
+            主力
+          </a>
+        </p>
+        <p>
           <a href={`./macd2.html?c=${code}`} target="_blank;">
             MACD
           </a>

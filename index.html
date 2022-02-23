@@ -24,11 +24,18 @@ const $DATA = {
         时序图 sequence/
         阴影方案 shadows/
         颜色方案 colors/
+        按钮 buttons/
     `.split(/\n/).filter(item => item.trim()).map(item => item.trim()),
 };
 </script>
 <style>
-button {margin-right: 20px;}
+#list {
+  display: flex;
+  flex-wrap: wrap;
+}
+#list button {
+  margin: 10px;
+}
 </style>
 <h1>浏览器应用</h1>
 <ul id="list"></ul>
@@ -39,7 +46,6 @@ $DATA.dataList
 .map(item => item.split(/\s+/))
 .map(arr => `<button type="button" class="btn btn-default"><a href="${basePath}app/${arr[1]}">${arr[0]}</a></button>`)
 .join('');
-console.log(basePath)
 </script>
 </body>
 </html>

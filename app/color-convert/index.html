@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色换算</title>
+</head>
+<style>
+label {
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+}
+.box1,.box2 {
+    width: 100px;
+    height: 20px;
+    display: inline-flex;
+}
+body>div {
+    display: flex;
+    align-items: center;
+}
+</style>
+<body>
+    <div>
+        <label for="hex">16进制(#000000)</label>
+        <input type="text" id="hex" spellCheck="false" autoComplete="off" autocorrect="off" autofocus="off" maxlength="6"  />
+        <div class="box1"></div>
+    </div>
+    <div>
+        <label for="hex">rgb(rgb(255,255,255))</label>
+        <input type="text" id="rgb" spellCheck="false" autoComplete="off" autocorrect="off" autofocus="off" maxlength="11"  />
+        <div class="box2"></div>
+    </div>
+    <div>
+    </div>
+
+<script type="module" src="./color-convert.js"></script>
+</body>
+</html>

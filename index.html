@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>666</title>
-    <link rel="stylesheet" href="./libs/css/bootstrap/v3.3.4/bootstrap.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>666</title>
+<link rel="stylesheet" href="./libs/css/bootstrap/v3.3.4/bootstrap.min.css">
 </head>
 <body>
 
 <script>
 const $DATA = {
     dataList: `
+        颜色换算 color-convert/
         读取剪切板图片 read-clipboard-image/
         文件比对 file-diff/
         代码编辑 code-editor/
@@ -25,28 +26,84 @@ const $DATA = {
         阴影方案 shadows/
         颜色方案 colors/
         按钮 buttons/
-        图片编辑 image-editor/
+        图片编辑 artboard/
+        web加解密 web-crypto/
     `.split(/\n/).filter(item => item.trim()).map(item => item.trim()),
 };
 </script>
 <style>
+body {font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+h1 {text-align: center;}
 #list {
   display: flex;
+  width: 900px;
   flex-wrap: wrap;
+  margin: 0 auto;
 }
 #list button {
   margin: 10px;
 }
+#list button a {
+  color: #fff;
+}
+#filter {
+  max-width: 900px;
+  width: 80%;
+  height: 30px;
+  line-height: 30px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+#list button {
+  background-color: #111827;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  padding: 0.75rem 1.2rem;
+  text-align: center;
+  text-decoration: none #6B7280 solid;
+  text-decoration-thickness: auto;
+  transition-duration: .2s;
+  transition-property: background-color,border-color,color,fill,stroke;
+  transition-timing-function: cubic-bezier(.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+}
 </style>
 <h1>浏览器应用</h1>
+<div style="text-align:center;"><input spellCheck="false" autoComplete="off" autocorrect="off" autofocus="off" type="text" id="filter" /></div>
+
 <ul id="list"></ul>
 <script>
 const basePath = location.hostname === 'localhost' ? '/' : '/666/'
-document.querySelector('#list').innerHTML = 
-$DATA.dataList
-.map(item => item.split(/\s+/))
-.map(arr => `<button type="button" class="btn btn-default"><a href="${basePath}app/${arr[1]}">${arr[0]}</a></button>`)
-.join('');
+const $list = document.querySelector('#list');
+let kw;
+const render = () => {
+  $list.innerHTML = $DATA.dataList
+  .map(item => item.split(/\s+/))
+  .filter(arr => {
+    if (typeof kw === 'string' && kw.length) {
+      return arr[0].includes(kw);
+    }
+    return true;
+  })
+  .map(arr => `<button type="button" class="btn btn-default"><a href="${basePath}app/${arr[1]}">${arr[0]}</a></button>`)
+  .join('');
+}
+document.querySelector('#filter').addEventListener('input', (e) => {
+  kw  = e.target.value.trim();
+  render();
+});
+render();
 </script>
 </body>
 </html>

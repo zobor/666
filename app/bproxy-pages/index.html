@@ -19,6 +19,17 @@
     padding: 0;
     margin: 0;
 }
+.collapse.navbar-collapse.show {
+  left: auto;
+  right: 1rem;
+  max-width: 300px;
+}
+.collapse.navbar-collapse.show .navbar-nav .dropdown>.dropdown-toggle {
+  margin-bottom: 0;
+}
+.downloads >a{
+  margin: 5px 0;
+}
 </style>
 <svg style="position:absolute;width:0;height:0;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-v-2cb57da0="" version="1.0" preserveAspectRatio="xMidYMid meet" color-interpolation-filters="sRGB">
     <symbol id="bproxy-logo">
@@ -82,7 +93,7 @@
           </a>
       
           <!-- Toggler -->
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <button id="toggle-show-menu" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
       
@@ -90,7 +101,7 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
       
             <!-- Toggler -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button id="close-navs" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <i class="fe fe-x"></i>
             </button>
       
@@ -145,7 +156,7 @@
               </p>
   
               <!-- Buttons -->
-              <div class="text-center text-md-start">
+              <div class="text-center text-md-start downloads">
                 <a href="overview.html" class="btn btn-primary shadow lift me-1">
                   Windows版本下载
                 </a>
@@ -158,5 +169,12 @@
           </div> <!-- / .row -->
         </div> <!-- / .container -->
       </section>
+<script>
+const $navs = document.querySelector('#navbarCollapse');
+const $close = document.querySelector('#close-navs');
+const toggleShow = () => $navs.classList.toggle('show');
+document.querySelector('#toggle-show-menu').addEventListener('click', toggleShow);
+$close.addEventListener('click', toggleShow);
+</script>
 </body>
 </html>

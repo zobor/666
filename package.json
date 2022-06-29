@@ -12,5 +12,8 @@
     "koa-static-server": "^1.5.2",
     "node-sass": "^7.0.1",
     "promise-formation": "^1.0.4"
+  },
+  "devDependencies": {
+    "request": "^2.88.2"
   }
 }

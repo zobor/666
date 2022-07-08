@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算器</title>
+</head>
+<body>
+<style>
+.box {display:flex;flex-direction: column;}
+input{padding: 10px;margin: 10px;}
+</style>
+<div class="box">
+<input type="text" placeholder="B" />
+<input type="text" placeholder="S" />
+<input type="text" placeholder="Result" disabled />
+
+<script type="module" src="../src/utils.js"></script>
+<script type="module">
+import { numVsNum } from '../src/utils.js';
+const [$1, $2, $3] = document.querySelectorAll('input');
+const params = {};
+$1.addEventListener('input',(e) => {
+    params.v1 = e.target.value;
+    calc();
+});
+$2.addEventListener('input',(e) => {
+    params.v2 = e.target.value;
+    calc();
+});
+function calc() {
+    if (params.v1 && params.v2) {
+        $3.value = numVsNum(params.v1, params.v2);
+    }
+}
+</script>
+</div>
+</body>
+</html>

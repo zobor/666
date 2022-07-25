@@ -27,8 +27,26 @@
 .collapse.navbar-collapse.show .navbar-nav .dropdown>.dropdown-toggle {
   margin-bottom: 0;
 }
-.downloads >a{
+.downloads .btn{
   margin: 5px 0;
+  position: relative;
+}
+.downloads .btn > .popup {
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+}
+.downloads .btn:hover .popup{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.downloads .btn > .popup>a {
+  text-align: center;
+  padding: 5px 0;
+  color: green;
 }
 </style>
 <svg style="position:absolute;width:0;height:0;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-v-2cb57da0="" version="1.0" preserveAspectRatio="xMidYMid meet" color-interpolation-filters="sRGB">
